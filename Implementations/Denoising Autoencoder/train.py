@@ -109,6 +109,10 @@ def main(args):
 				                100. * batch_ind / len(train_loader))
 				print(train_log, end='\r')
 				sys.stdout.flush()
+		
+		# Learning rate decay
+		if epoch == 4:
+			optimizer = optim.Adam(autoencoder.parameters(), lr=lr/10)
 
 	# Display training result
 	with torch.no_grad():
