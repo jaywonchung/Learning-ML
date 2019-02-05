@@ -37,7 +37,7 @@ def MSE_criterion(x, y):
 	"""
 	return torch.mean((x-y)**2)
 
-def main(args):
+def main(**kwargs):
 	"""
 	Main function that trains the model.
 	1. Retrieve arguments from args
@@ -46,20 +46,20 @@ def main(args):
 	4. Display first batch of test set
 	
 	Args:
-		args.add_noise: Whether to add noise (DAE) to input image or not (AE).
-		args.epochs: How many epochs to train model.
-		args.loss: Which loss function to use. Either cross-entropy or mean square error.
-		args.lr: Learning rate.
-		args.latent_dim: Dimension of latent variable.
-		args.print_every: How often to print training progress.
+		add_noise: Whether to add noise (DAE) to input image or not (AE).
+		epochs: How many epochs to train model.
+		loss: Which loss function to use. Either cross-entropy or mean square error.
+		lr: Learning rate.
+		latent_dim: Dimension of latent variable.
+		print_every: How often to print training progress.
 	"""
 	# Retrieve arguments
-	add_noise = args.add_noise
-	epochs = args.epochs
-	loss = args.loss
-	lr = args.learning_rate
-	latent_dim = args.latent_dim
-	print_every = args.print_every
+	add_noise = kwargs['add_noise']
+	epochs = kwargs['epochs']
+	loss = kwargs['loss']
+	lr = kwargs['learning_rate']
+	latent_dim = kwargs['latent_dim']
+	print_every = kwargs['print_every']
 	
 	# Load and transform MNIST dataset
 	trsf = transforms.Compose([transforms.ToTensor(), transforms.Lambda(lambda x : (x >= 0.5).float())])
@@ -132,4 +132,4 @@ def main(args):
 
 if __name__ == "__main__":
 	args = get_args()
-	main(args)
+	main(**vars(args))
