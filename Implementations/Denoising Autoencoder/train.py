@@ -46,7 +46,7 @@ def main(args):
 	4. Display first batch of test set
 	
 	Args:
-		args.add_noise: Whether to add noise (DAE) to input image or not (AE).not
+		args.add_noise: Whether to add noise (DAE) to input image or not (AE).
 		args.epochs: How many epochs to train model.
 		args.loss: Which loss function to use. Either cross-entropy or mean square error.
 		args.lr: Learning rate.
@@ -85,12 +85,13 @@ def main(args):
 		for batch_ind, (input_data, _) in enumerate(train_loader):
 			input_data = input_data.to(device)
 			
-			# Forward propagation with noise added
+			# Forward propagation
 			if add_noise:
-				output = autoencoder(F.dropout(input_data, p=0.5))
+				noised_input_data = F.dropout(input_data, p=0.5)
+				output = autoencoder(noised_input_data)
 			else:
 				output = autoencoder(input_data)
-			
+
 			# Calculate loss
 			loss = criterion(output, input_data)
 			
