@@ -88,6 +88,7 @@ class GaussianEncoder(nn.Module):
 
         return mu, sigma
 
+
 class BernoulliDecoder(nn.Module):
 	"""BernoulliDecoder module for VAE with MNIST dataset"""
 
@@ -100,12 +101,22 @@ class BernoulliDecoder(nn.Module):
             latent_dim: Dimension of the latent variable
         """
 		super().__init__()
-		self.fc1 = nn.Linear(latent_dim, 500)
-		self.fc2 = nn.Linear(500, 500)
-		self.fc3 = nn.Linear(500, 28*28)
+
+        # z: (N, latent_dim)
+        self.fc1 = nn.Linear(in_features=latent_dim, out_features=1024)
+        self.bn1 = nn.BatchNorm1d(num_features=1024)
+        # z: (N, 1024)
+        self.fc2 = nn.Linear(in_features=1024, out_features=128*7*7)
+        self.bn2 = nn.BatchNorm1d(num_features=128*7*7)
+        # z: (N, 128*7*7)
+        self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=4, stride=2, padding=1)
+        self.bn3 = nn.BatchNorm2d(num_features=64)
+        # z: (N, 64, 14, 14)
+        self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=1, kernel_size=4, stride=2, padding=1)
+        # z: (N, 1, 28, 28)
 		
 		for m in self.modules():
-            if isinstance(m, nn.Linear):
+            if isinstance(m, nn.Linear) or isinstance(m, nn.ConvTranspose2d):
 				nn.init.kaiming_normal_(m.weight)
 				m.bias.data.fill_(0.)
 	
@@ -122,32 +133,71 @@ class BernoulliDecoder(nn.Module):
             sigma: Vector of size latent_dim.
                    Each element represents the standard deviation of a Gaussian distribution.
         """
-		x = self.fc1(x)
-		x = torch.tanh(x)
-		x = F.dropout(x, p=0.1)
-		
-		x = self.fc2(x)
-		x = F.elu(x)
-		x = F.dropout(x, p=0.1)
-		
-		x = self.fc3(x)
-		x = torch.sigmoid(x)
-		
-		x = x.view(-1, 1, 28, 28)
-		return x
+		z = F.relu(self.bn1(self.fc1(z)))
+        z = F.relu(self.bn2(self.fc2(z)))
+        z = z.view(-1, 127, 7, 7)
+        z = F.relu(self.bn3(self.deconv3(z)))
+        z = F.sigmoid(self.deconv4(z))
+		return z
+
 
 class GaussianDeccoder(nn.Module):
     """GaussianDecoder module for VAE"""
 
-    def __init__(self, latent_dim=2, dataset='MNIST'):
+    def __init__(self, latent_dim=2, dataset='MNIST', create_sigma=True):
         """
         Constructor for the GaussianDecoder class
 
         Parameter:
             latent_dim: Dimension of the latent variable
             dataset: Type of dataset to use. Either 'MNIST' or 'CIFAR10'
+            create_sigma: Whether to model standard deviations too. 
+                          If False, only outputs the mu vector, and all sigma is implicitly 1.
         """
         super().__init__()
+        self.latent_dim = latent_dim
+        self.dataset = dataset
+        self.create_sigma = create_sigma
+
+        if dataset == 'MNIST':
+            # z: (N, latent_dim)
+            self.fc1 = nn.Linear(in_features=latent_dim, out_features=1024)
+            self.bn1 = nn.BatchNorm1d(num_features=1024)
+            # z: (N, 1024)
+            self.fc2 = nn.Linear(in_features=1024, out_features=128*7*7)
+            self.bn2 = nn.BatchNorm1d(num_features=128*7*7)
+            # z: (N, 128*7*7)
+            self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=4, stride=2, padding=1)
+            self.bn3 = nn.BatchNorm2d(num_features=64)
+            # z: (N, 64, 14, 14)
+            if create_sigma:
+                self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=2, kernel_size=4, stride=2, padding=1)
+                # z: (N, 2, 28, 28)
+            else:
+                self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=1, kernel_size=4, stride=2, padding=1)
+                # z: (N, 1, 28, 28)
+                
+        elif dataset == 'CIFAR10':
+            # z: (N, latent_dim)
+            self.fc1 = nn.Linear(in_features=latent_dim, out_features=448*2*2)
+            self.bn1 = nn.BatchNorm1d(num_features=448*2*2)
+            # z: (N, 448*2*2)
+            self.deconv2 = nn.ConvTranspose2d(in_channels=448, out_channels=256, kernel_size=4, stride=2, padding=1)
+            self.bn2 = nn.BatchNorm2d(num_features=256)
+            # z: (N, 256, 4, 4)
+            self.deconv3 = nn.ConvTranspose2d(in_channels=256, out_channels=128, kernel_size=4, stride=2, padding=1)
+            # z: (N, 128, 8, 8)
+            self.deconv4 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=4, stride=2, padding=1)
+            # z: (N, 64, 16, 16)
+            if create_sigma:
+                self.deconv5 = nn.ConvTranspose2d(in_channels=64, out_channels=6, kernel_size=4, stride=2, padding=1)
+                # z: (N, 6, 32, 32)
+            else:
+                self.deconv5 = nn.ConvTranspose2d(in_channels=64, out_channels=3, kernel_size=4, stride=2, padding=1)
+                # z: (N, 3, 32, 32)
+
+        else:
+            raise NotImplementedError
 
     def forward(self, z):
         """
@@ -162,7 +212,8 @@ class GaussianDeccoder(nn.Module):
             sigma: Vector of size latent_dim.
                    Each element represents the standard deviation of a Gaussian distribution.
         """
-        
+        raise NotImplementedError
+
 
 class VAE(nn.Module):
 	"""Variational Autoencoder module that wraps one encoder and one decoder module."""
@@ -183,14 +234,13 @@ class VAE(nn.Module):
 	def forward(self, x):
         """
         Forward method for the GaussianEncoder class
+        Samples latent variable z from the distribution calculated by the encoder,
+        and feeds it to the decoder.
 
         Parameter:
             x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
 
         Return:
-            mu: Vector of size latent_dim.
-                Each element represents the mean of a Gaussian Distribution.
-            sigma: Vector of size latent_dim.
-                   Each element represents the standard deviation of a Gaussian distribution.
+            
         """
 		return self.decoder(self.encoder(x))
