@@ -2,9 +2,8 @@ import argparse
 
 defaults = {
 	"dataset": True,
-	"binarize_input": True,
-	"epochs": 10,
-	"loss": 'CE',
+	"decoder_type": 'Gaussian',
+	"epochs": 10,]
 	"learning_rate": 3e-4,
 	"latent_dim": 10,
 	"print_every": 1
@@ -13,6 +12,10 @@ defaults = {
 def check_args(args):
 	"""Check commandline argument validity."""
 	assert args.dataset=='MNIST' or args.dataset=='CIFAR10', "Dataset must be either 'MNIST' for 'CIFAR10"
+
+	assert args.decoder_type=='Gaussian' or args.decoder_type=='Bernoulli', "Decoder type must be either 'Gaussian' for 'Bernoulli"
+
+	assert args.model_sigma==True or args.model_sigma==False, "Model sigma must be either True or False"
 	
 	assert args.epochs >= 1, "Number of epochs must be a positive integer"
 	
@@ -31,6 +34,12 @@ def get_args():
 	
 	parser.add_argument("-d", "--dataset",
 		type=str, default=defaults['dataset'], help="'MNIST' or 'CIFAR10'")
+
+	parser.add_argument("-t", "--decoder_type",
+		type=str, default=defaults['decoder_type'], help="'Gaussian' or 'Bernoulli'")
+
+	parser.add_argument("-s", "--model_sigma",
+		type=bool, default=defaults['model_sigma'], help="In case of Gaussian decoder, whether to model the standard deviation")
 	
 	parser.add_argument("-e", "--epochs",
 		type=int, default=defaults['epochs'], help="Number of epochs to train")
