@@ -3,6 +3,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Encoder(nn.Module):
+	"""
+	Encoder module for autoencoder.
+	
+	Structure:
+		[fc] - [elu] - [dropout] - 
+		[fc] - [tanh] - [dropout] -
+		[fc]
+	"""
 	
 	def __init__(self, latent_dim=2):
 		super().__init__()
@@ -30,7 +38,14 @@ class Encoder(nn.Module):
 		return x
 
 class Decoder(nn.Module):
+	"""
+	Decoder module for autoencoder.
 	
+	Structure:
+		[fc] - [tanh] - [dropout] - 
+		[fc] - [elu] - [dropout] -
+		[fc] - [sigmoid]
+	"""	
 	def __init__(self, latent_dim=2):
 		super().__init__()
 		self.fc1 = nn.Linear(latent_dim, 500)
@@ -58,12 +73,12 @@ class Decoder(nn.Module):
 		return x
 
 class Autoencoder(nn.Module):
+	"""Autoencoder module that wraps one encoder and one decoder module."""
 	
 	def __init__(self, latent_dim=2):
 		super().__init__()
 		self.encoder = Encoder(latent_dim)
 		self.decoder = Decoder(latent_dim)
 	
-	# x is in range [0, 1]
 	def forward(self, x):
 		return self.decoder(self.encoder(x))
