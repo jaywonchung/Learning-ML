@@ -121,4 +121,4 @@ Every argument is optional, and has a default value defined at ```arguments.py``
 - ```--latent_dim, -z```: Dimension of the latent variable. *Default*: ```10```
 - ```--print_every, -p```: How often to print training progress. *Default*: ```1```
 
-Binarizing the input means that you model the output as a multinoulli distribution. Then using the cross-entropy loss is desirable in the Maximnum Likelihood Estimation perspective. On the other hand if you do not binarize input images, you would be modelling the output as a Multivariate Gaussian distribution. Then using the mean square error is desirable.
+Binarizing the input means that you model the output as a multinoulli distribution. Then using the cross-entropy loss is desirable in the Maximum Likelihood Estimation perspective. On the other hand if you do not binarize the input images, you would be modelling the output as a Multivariate Gaussian distribution. Then using the mean square error is desirable.
