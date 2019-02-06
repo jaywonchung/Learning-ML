@@ -16,6 +16,7 @@ Training specs:
 - Binarized input images
 - Cross-entropy loss
 - 10-D latent variable
+- Learning rate 3e-4, scaled to 3e-5 at epoch 6
 
 <table align='center'>
 <tr align='center'>
@@ -37,6 +38,7 @@ Training specs:
 Training specs:
 - Binarized input images
 - Dropout noise (p=0.5) applied to input images
+- Learning rate 3e-4, scaled to 3e-5 at epoch 6
 
 With 2-D latent variable:
 
@@ -87,3 +89,34 @@ With 10-D latent variable:
     <td><img src = 'results/DAE-CE-z10-e10-nobin.png' height = '200px'>
 </tr>
 </table>
+
+# Usage
+## Prerequisites
+1. Pytorch and torchvision
+2. Packages: numpy, matplotlib
+
+## Execution
+
+Command line:
+```bash
+python train.py -n True -b True -e 10 -l 'CE' -lr 3e-4 -z 10 -p 1
+```
+
+Jupyter notebook:
+```python
+from train import main
+%matplotlib inline
+
+main(add_noise=True, binarize_input=True, epochs=10, loss='CE', learning_rate=3e-4, latent_dim=10, print_every=1)
+```
+
+## Arguments
+Every argument is optional, and has a default value defined at ```args.py```.
+
+- ```--add_noise, -n```: Whether to add dropout noise to input images. *Default*: - ```True```  
+- ```--binarize_input, -b```: Whether to binarize input images (threshold 0.5). *Default*: ```True```
+- ```--epochs, -e```: Number of epochs to train. *Default*: ```10```
+- ```--loss, -l```: Which loss function to use. Should be either ```'CE'``` or ```'MSE'```. *Default*: ```'CE'```
+- ```--learning_rate, -lr```: Learning rate. This value is decayed to ```lr/10``` at epoch 6. *Default*: ```3e-4```
+- ```--latent_dim, -z```: Dimension of the latent variable. *Default*: ```10```
+- ```--print_every, -p```: How often to print training progress. *Default*: ```1```
