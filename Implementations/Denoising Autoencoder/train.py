@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 from model import Autoencoder
 from plot_utils import display_batch
-from train_args import get_args, defaults
+from arguments import get_args, defaults
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
