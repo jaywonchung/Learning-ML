@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 class GaussianEncoder(nn.Module):
 	"""Gaussian encoder module for VAE"""
 
@@ -242,7 +244,7 @@ class GaussianDeccoder(nn.Module):
 class VAE(nn.Module):
 	"""Variational Autoencoder module that wraps one encoder and one decoder module."""
 	
-	def __init__(self, latent_dim=2, dataset='MNIST', decoder_type='Bernoulli'):
+	def __init__(self, latent_dim=2, dataset='MNIST', decoder_type='Bernoulli', model_sigma=True):
         """
         Constructor for VAE class
 
@@ -250,20 +252,29 @@ class VAE(nn.Module):
             latent_dim: Dimension of the latent variable
             dataset: Type of dataset to use. Either 'MNIST' or 'CIFAR10'
             decoder_type: Which type of decoder to use. Either 'Bernoulli' or 'Gaussian'
+            model_sigma: Whether to model standard deviations too.
+                         If True, forward method returns (mu, sigma). Else, returns only mu.
         """
 		super().__init__()
-        raise NotImplementedError
+        self.encoder = GaussianEncoder(latent_dim, dataset)
+        if decoder_type == 'Bernoulli':
+            self.decoder = BernoulliDecoder(latent_dim)
+        elif decoder_tpye == 'Gaussian':
+            self.decoder = GaussianDecoder(latent_dim, dataset, model_sigma)
 	
 	def forward(self, x):
         """
         Forward method for the GaussianEncoder class
         Samples latent variable z from the distribution calculated by the encoder,
-        and feeds it to the decoder.
+        and feeds it to the decoder
 
         Parameter:
             x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
 
         Return:
-            
+            If model_sigma is True, returns (mu, sigma)
+            Else, returns only mu
         """
-        raise NotImplementedError
+        z_mu, z_sigma = self.encoder(x)
+        z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)
+        return self.decoder(z)
