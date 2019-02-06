@@ -25,10 +25,10 @@ Training specs:
     <td> Epoch 10 </td>
 </tr>
 <tr>
-    <td><img src = 'results/Binarized Truth.png' height = '150px'>
-    <td><img src = 'results/AE-CE-z10-e1.png' height = '150px'>
-    <td><img src = 'results/AE-CE-z10-e5.png' height = '150px'>
-    <td><img src = 'results/AE-CE-z10-e10.png' height = '150px'>
+    <td><img src = 'results/Binarized Truth.png' height = '200px'>
+    <td><img src = 'results/AE-CE-z10-e1.png' height = '200px'>
+    <td><img src = 'results/AE-CE-z10-e5.png' height = '200px'>
+    <td><img src = 'results/AE-CE-z10-e10.png' height = '200px'>
 </tr>
 </table>
 
@@ -71,8 +71,8 @@ With 10-D latent variable:
     <td> Noised input image </td>
 </tr>
 <tr align='center'>
-    <td><img src = 'results/Binarized Truth-nobin.png' height = '200px'>
-    <td><img src = 'results/Noised Truth-nobin.png' height = '200px'>
+    <td><img src = 'results/Binarized Truth.png' height = '200px'>
+    <td><img src = 'results/Noised Truth.png' height = '200px'>
 </tr>
 <tr align='center'>
     <td> Epoch 1 </td>
