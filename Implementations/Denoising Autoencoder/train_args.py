@@ -1,9 +1,20 @@
 import argparse
 
+defaults = {
+	"add_noise": True,
+	"binarize_input": True,
+	"epochs": 10,
+	"loss": 'CE',
+	"learning_rate": 3e-4,
+	"latent_dim": 10,
+	"print_every": 1
+}
 
 def check_args(args):
 	"""Check commandline argument validity."""
 	assert args.add_noise==True or args.add_noise==False, "Add noise must be either True or False"
+	
+	assert args.binarize_input==True or args.binarize_input==False, "Binarize input must be either True or False"
 	
 	assert args.epochs >= 1, "Number of epochs must be a positive integer"
 	
@@ -23,21 +34,24 @@ def get_args():
 		description="Pytorch Implementation of Denoising Autoencoder(DAE)")
 	
 	parser.add_argument("-n", "--add_noise",
-		type=bool, default=True, help="model = DAE if add_noise else AE")
+		type=bool, default=defaults['add_noise'], help="model = DAE if add_noise else AE")
+	
+	parser.add_argument("-b", "--binarize_input",
+		type=bool, default=defaults['binarize_input'], help="Whether to binarize input images")
 	
 	parser.add_argument("-e", "--epochs",
-		type=int, default=10, help="Number of epochs to train")
+		type=int, default=defaults['epochs'], help="Number of epochs to train")
 	
 	parser.add_argument("-ls", "--loss",
-		type=str, default="CE", help="Which loss function to use: CE or MSE")
+		type=str, default=defaults['loss'], help="Which loss function to use: CE or MSE")
 	
 	parser.add_argument("-lr", "--learning_rate",
-		type=float, default=1e-3, help="Learning rate for adam optimizer")
+		type=float, default=defaults['learning_rate'], help="Learning rate for adam optimizer")
 	
 	parser.add_argument("-z", "--latent_dim",
-		type=int, default=10, help="Dimension of latent variable z")
+		type=int, default=defaults['latent_dim'], help="Dimension of latent variable z")
 	
 	parser.add_argument("-p", "--print_every",
-		type=int, default=1, help="How often to print loss progress")
+		type=int, default=defaults['print_every'], help="How often to print loss progress")
 	
 	return check_args(parser.parse_args())

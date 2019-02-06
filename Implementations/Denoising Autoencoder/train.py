@@ -7,12 +7,10 @@ import torchvision
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
-import numpy as np
-from tqdm import tqdm
 
 from model import Autoencoder
 from plot_utils import display_batch
-from train_args import get_args
+from train_args import get_args, defaults
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -40,13 +38,14 @@ def MSE_criterion(x, y):
 def main(**kwargs):
 	"""
 	Main function that trains the model.
-	1. Retrieve arguments from args
+	1. Retrieve arguments from kwargs
 	2. Prepare MNIST
 	3. Train
 	4. Display first batch of test set
 	
 	Args:
 		add_noise: Whether to add noise (DAE) to input image or not (AE).
+		binarize_input: Whether to binarize input image pixels to 0 and 1.
 		epochs: How many epochs to train model.
 		loss: Which loss function to use. Either cross-entropy or mean square error.
 		lr: Learning rate.
@@ -54,15 +53,19 @@ def main(**kwargs):
 		print_every: How often to print training progress.
 	"""
 	# Retrieve arguments
-	add_noise = kwargs['add_noise']
-	epochs = kwargs['epochs']
-	loss = kwargs['loss']
-	lr = kwargs['learning_rate']
-	latent_dim = kwargs['latent_dim']
-	print_every = kwargs['print_every']
+	add_noise = kwargs.get('add_noise', defaults['add_noise'])
+	binarize_input = kwargs.get('binarize_input', defaults['binarize_input'])
+	epochs = kwargs.get('epochs', defaults['epochs'])
+	loss = kwargs.get('loss', defaults['loss'])
+	lr = kwargs.get('learning_rate', defaults['learning_rate'])
+	latent_dim = kwargs.get('latent_dim', defaults['latent_dim'])
+	print_every = kwargs.get('print_every', defaults['print_every'])
 	
 	# Load and transform MNIST dataset
-	trsf = transforms.Compose([transforms.ToTensor(), transforms.Lambda(lambda x : (x >= 0.5).float())])
+	if binarize_input:
+		trsf = transforms.Compose([transforms.ToTensor(), transforms.Lambda(lambda x : (x >= 0.5).float())])
+	else:
+		trsf = transforms.ToTensor()
 	MNIST_train = datasets.MNIST(
 		root='MNIST', train=True, transform=trsf, download=True)
 	MNIST_test = datasets.MNIST(
@@ -114,21 +117,25 @@ def main(**kwargs):
 		if epoch == 4:
 			optimizer = optim.Adam(autoencoder.parameters(), lr=lr/10)
 
-	# Display training result
+	# Display training result with test set
 	with torch.no_grad():
 		images, _ = iter(test_loader).next()
 		images = images.to(device)
 		
 		if add_noise:
 			noise_images = F.dropout(images, p=0.5)
-			output = autoencoder(noise_images)
-			display_batch(images)
-			display_batch(noise_images)
-			display_batch(output)
+			denoised_output = autoencoder(noise_images)
+			output = autoencoder(images)
+			display_batch("Binarized truth" if binarize_input else "Truth",
+				images, binarize_input)
+			display_batch("Truth with noise", noise_images, binarize_input)
+			display_batch("Output of noised image", output, binarize_input)
+			display_batch("Output of clean image", denoised_output, binarize_input)
 		else:
 			output = autoencoder(images)
-			display_batch(images)
-			display_batch(output)
+			display_batch("Binarized truth" if binarize_input else "Truth",
+				images, binarize_input)
+			display_batch("Output", output, binarize_input)
 
 if __name__ == "__main__":
 	args = get_args()
