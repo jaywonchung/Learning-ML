@@ -129,13 +129,13 @@ def main(**kwargs):
 			display_batch("Binarized truth" if binarize_input else "Truth",
 				images, binarize_input)
 			display_batch("Truth with noise", noise_images, binarize_input)
-			display_batch("Output of noised image", output, binarize_input)
-			display_batch("Output of clean image", denoised_output, binarize_input)
+			display_batch("Reconstruction of noised image", output, binarize_input)
+			display_batch("Reconstruction of clean image", denoised_output, binarize_input)
 		else:
 			output = autoencoder(images)
 			display_batch("Binarized truth" if binarize_input else "Truth",
 				images, binarize_input)
-			display_batch("Output", output, binarize_input)
+			display_batch("Reconstruction", output, binarize_input)
 
 if __name__ == "__main__":
 	args = get_args()
