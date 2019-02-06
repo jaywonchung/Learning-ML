@@ -99,7 +99,7 @@ With 10-D latent variable:
 
 Command line:
 ```bash
-python train.py -n True -b True -e 10 -l 'CE' -lr 3e-4 -z 10 -p 1
+python train.py -n True -b True -e 10 -ls 'CE' -lr 3e-4 -z 10 -p 1
 ```
 
 Jupyter notebook:
@@ -111,12 +111,14 @@ main(add_noise=True, binarize_input=True, epochs=10, loss='CE', learning_rate=3e
 ```
 
 ## Arguments
-Every argument is optional, and has a default value defined at ```args.py```.
+Every argument is optional, and has a default value defined at ```arguments.py```.
 
 - ```--add_noise, -n```: Whether to add dropout noise to input images. *Default*: - ```True```  
 - ```--binarize_input, -b```: Whether to binarize input images (threshold 0.5). *Default*: ```True```
 - ```--epochs, -e```: Number of epochs to train. *Default*: ```10```
-- ```--loss, -l```: Which loss function to use. Should be either ```'CE'``` or ```'MSE'```. *Default*: ```'CE'```
+- ```--loss, -ls```: Which loss function to use. Should be either ```'CE'``` or ```'MSE'```. *Default*: ```'CE'```
 - ```--learning_rate, -lr```: Learning rate. This value is decayed to ```lr/10``` at epoch 6. *Default*: ```3e-4```
 - ```--latent_dim, -z```: Dimension of the latent variable. *Default*: ```10```
 - ```--print_every, -p```: How often to print training progress. *Default*: ```1```
+
+Binarizing the input means that you model the output as a multinoulli distribution. Then using the cross-entropy loss is desirable in the Maximnum Likelihood Estimation perspective. On the other hand if you do not binarize input images, you would be modelling the output as a Multivariate Gaussian distribution. Then using the mean square error is desirable.
