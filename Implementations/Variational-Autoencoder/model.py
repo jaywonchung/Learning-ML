@@ -43,9 +43,6 @@ class GaussianEncoder(nn.Module):
             self.fc4 = nn.Linear(in_features=256*4*4, out_features=2*latent_dim)
             # x: (N, 2*latent_dim)
 
-        else:
-            raise NotImplementedError
-
 		for m in self.modules():
 			if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
 				nn.init.kaiming_normal_(m.weight)
@@ -77,9 +74,6 @@ class GaussianEncoder(nn.Module):
             x = F.leaky_relu(self.bn3(self.conv3(x)), negative_slope=0.2)
             x = x.view(-1, 256*4*4)
             x = self.fc4(x)
-        
-        else:
-            raise AttributeError('Wrong value for self.dataset: ' + self.dataset)
 
         # split x in half
         mu = x[:, :self.latent_dim]
@@ -125,7 +119,7 @@ class BernoulliDecoder(nn.Module):
         Forward method for the BernoulliDecoder class
 
         Parameter:
-            x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
+            z: Batch of latent variables.
 
         Return:
             mu: Vector of size latent_dim.
@@ -135,7 +129,7 @@ class BernoulliDecoder(nn.Module):
         """
 		z = F.relu(self.bn1(self.fc1(z)))
         z = F.relu(self.bn2(self.fc2(z)))
-        z = z.view(-1, 127, 7, 7)
+        z = z.view(-1, 128, 7, 7)
         z = F.relu(self.bn3(self.deconv3(z)))
         z = F.sigmoid(self.deconv4(z))
 		return z
@@ -144,20 +138,20 @@ class BernoulliDecoder(nn.Module):
 class GaussianDeccoder(nn.Module):
     """GaussianDecoder module for VAE"""
 
-    def __init__(self, latent_dim=2, dataset='MNIST', create_sigma=True):
+    def __init__(self, latent_dim=2, dataset='MNIST', model_sigma=True):
         """
         Constructor for the GaussianDecoder class
 
         Parameter:
             latent_dim: Dimension of the latent variable
             dataset: Type of dataset to use. Either 'MNIST' or 'CIFAR10'
-            create_sigma: Whether to model standard deviations too. 
-                          If False, only outputs the mu vector, and all sigma is implicitly 1.
+            model_sigma: Whether to model standard deviations too.
+                         If False, only outputs the mu vector, and all sigma is implicitly 1.
         """
         super().__init__()
         self.latent_dim = latent_dim
         self.dataset = dataset
-        self.create_sigma = create_sigma
+        self.model_sigma = model_sigma
 
         if dataset == 'MNIST':
             # z: (N, latent_dim)
@@ -170,13 +164,13 @@ class GaussianDeccoder(nn.Module):
             self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=4, stride=2, padding=1)
             self.bn3 = nn.BatchNorm2d(num_features=64)
             # z: (N, 64, 14, 14)
-            if create_sigma:
+            if model_sigma:
                 self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=2, kernel_size=4, stride=2, padding=1)
                 # z: (N, 2, 28, 28)
             else:
                 self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=1, kernel_size=4, stride=2, padding=1)
                 # z: (N, 1, 28, 28)
-                
+
         elif dataset == 'CIFAR10':
             # z: (N, latent_dim)
             self.fc1 = nn.Linear(in_features=latent_dim, out_features=448*2*2)
@@ -189,22 +183,24 @@ class GaussianDeccoder(nn.Module):
             # z: (N, 128, 8, 8)
             self.deconv4 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=4, stride=2, padding=1)
             # z: (N, 64, 16, 16)
-            if create_sigma:
+            if model_sigma:
                 self.deconv5 = nn.ConvTranspose2d(in_channels=64, out_channels=6, kernel_size=4, stride=2, padding=1)
                 # z: (N, 6, 32, 32)
             else:
                 self.deconv5 = nn.ConvTranspose2d(in_channels=64, out_channels=3, kernel_size=4, stride=2, padding=1)
                 # z: (N, 3, 32, 32)
 
-        else:
-            raise NotImplementedError
+        for m in self.modules():
+            if isinstance(m, nn.Linear) or isinstance(m, nn.ConvTranspose2d):
+                nn.init.kaiming_normal_(m.weight)
+                m.bias.data.fill_(0.)
 
     def forward(self, z):
         """
         Forward method for the GaussianDecoder class
 
         Parameter:
-            x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
+            z: Batch of latent variables.
 
         Return:
             mu: Vector of size latent_dim.
@@ -212,7 +208,35 @@ class GaussianDeccoder(nn.Module):
             sigma: Vector of size latent_dim.
                    Each element represents the standard deviation of a Gaussian distribution.
         """
-        raise NotImplementedError
+        if self.dataset == 'MNIST':
+            z = F.relu(self.bn1(self.fc1(z)))
+            z = F.relu(self.bn2(self.fc2(z)))
+            z = z.view(-1, 127, 7, 7)
+            z = F.relu(self.bn3(self.deconv3(z)))
+            if model_sigma:
+                gaussian = self.deconv4(z)
+                mu = F.sigmoid(gaussian[:, 0, :, :])
+                sigma = 1e-6 + F.softplus(gaussian[:, 1, :, :])
+                return mu, sigma
+            else:
+                mu = F.sigmoid(self.deconv4(z))
+                return mu
+        
+        elif self.dataset == 'CIFAR10':
+            z = F.relu(self.bn1(self.fc1(z)))
+            z = F.relu(self.bn2(self.deconv2(z)))
+            z = F.relu(self.deconv3(z))
+            z = F.relu(self.deconv4(z))
+            if model_sigma:
+                gaussian = self.deconv5(z)
+                mu = F.sigmoid(gaussian[:, :3, :, :])
+                sigma = 1e-6 + F.softplus(gaussian[:, 3:, :, :])
+                return mu, sigma
+            else:
+                mu = F.sigmoid(self.deconv5(z))
+                return mu
+
+
 
 
 class VAE(nn.Module):
@@ -228,8 +252,7 @@ class VAE(nn.Module):
             decoder_type: Which type of decoder to use. Either 'Bernoulli' or 'Gaussian'
         """
 		super().__init__()
-		self.encoder = Encoder(latent_dim)
-		self.decoder = Decoder(latent_dim)
+        raise NotImplementedError
 	
 	def forward(self, x):
         """
@@ -243,4 +266,4 @@ class VAE(nn.Module):
         Return:
             
         """
-		return self.decoder(self.encoder(x))
+        raise NotImplementedError
