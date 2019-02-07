@@ -65,7 +65,7 @@ def main(**kwargs):
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
     
     # Create model and optimizer
-    model = VAE(latent_dim, dataset, decoder_type).to(device)
+    model = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
     # Train announce
