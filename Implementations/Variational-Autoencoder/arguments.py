@@ -2,7 +2,7 @@ import argparse
 
 defaults = {
     "dataset": 'MNIST',
-    "decoder_type": 'Gaussian',
+    "decoder_type": 'Bernoulli',
     "model_sigma": False,
     "epochs": 10,
     "batch_size": 64,
