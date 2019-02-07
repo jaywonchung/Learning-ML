@@ -118,12 +118,10 @@ def main(**kwargs):
                                 100. * batch_ind / len(train_loader))
                 print(train_log, end='\r')
                 sys.stdout.flush()
-            
-            if batch_ind == len(train_data)-1:
-                val_loss = loss
+
         
         # Learning rate decay
-        scheduler.step(val_loss)
+        scheduler.step(loss)
 
         # Display training result with test set
         with torch.no_grad():
