@@ -131,7 +131,6 @@ def main(**kwargs):
             output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
             display_batch("Truth", images)
-            print(images.shape, out_mu.shape, output.shape)
             display_batch("Mean reconstruction", out_mu)
             display_batch("Sampled reconstruction", output)
 
