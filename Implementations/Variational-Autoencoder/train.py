@@ -68,7 +68,8 @@ def main(**kwargs):
     model = VAE(latent_dim, dataset, decoder_type).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
-    # Train
+    # Train announce
+    print(f'Start training with VAE with Gaussian encoder and {decoder_type} decoder')
     model.train()
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
@@ -112,6 +113,15 @@ def main(**kwargs):
     with torch.no_grad():
         images, _ = iter(test_loader).next()
         images = images.to(device)
+
+        if decoder_type == 'Bernoulli':
+            z_mu, z_sigma, p = model(input_data)
+
+        elif model_sigma:
+            z_mu, z_sigma, out_mu, out_sigma = model(input_data)
+        else:
+            z_mu, z_sigma, out_mu = model(input_data)
+
         
         if add_noise:
             noise_images = F.dropout(images, p=0.5)
