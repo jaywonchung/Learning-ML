@@ -129,7 +129,7 @@ def main(**kwargs):
 
         # Save model every 20 epochs
         if epoch != 0 and epoch%20 == 0:
-            print('Temporarily saved model to ' + save_model(epoch, autoencoder, optimizer, f'/saved_model/tmp-e{epoch}'))
+            print('Temporarily saved model to ' + save_model(epoch, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}'))
 
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}.png'
@@ -158,7 +158,7 @@ def main(**kwargs):
                 display_batch("Mean-reconstruction", out_mu, data, True)
                 # display_batch("Sampled reconstruction", output, data, True)
 
-    print('Saved model to /' + save_model(epochs, autoencoder, optimizer))
+    print('Saved model to /' + save_model(epochs, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epochs}-z{latent_dim}'))
 
 
 if __name__ == "__main__":
