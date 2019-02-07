@@ -8,7 +8,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 
-from model import VAE
+from model import VAE, save_model
 from plot_utils import display_batch
 from arguments import get_args, defaults
 
@@ -67,10 +67,10 @@ def main(**kwargs):
     
     # Create model and optimizer
     if decoder_type == 'Bernoulli':
-        model = VAE(latent_dim, dataset, decoder_type).to(device)
+        autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
     else:
-        model = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+        autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
+    optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
     # Create learning rate scheduler
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
@@ -80,18 +80,18 @@ def main(**kwargs):
 
     # Train
     loss_hist = []
-    model.train()
+    autoencoder.train()
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
             input_data = input_data.to(device)
             
             # Forward propagation
             if decoder_type == 'Bernoulli':
-                z_mu, z_sigma, p = model(input_data)
+                z_mu, z_sigma, p = autoencoder(input_data)
             elif model_sigma:
-                z_mu, z_sigma, out_mu, out_sigma = model(input_data)
+                z_mu, z_sigma, out_mu, out_sigma = autoencoder(input_data)
             else:
-                z_mu, z_sigma, out_mu = model(input_data)
+                z_mu, z_sigma, out_mu = autoencoder(input_data)
 
             # Calculate loss
             KL_divergence_i = 0.5 * torch.sum(z_mu**2 + z_sigma**2 - torch.log(1e-8+z_sigma**2) - 1., dim=1)
@@ -132,7 +132,7 @@ def main(**kwargs):
             images = images.to(device)
 
             if decoder_type == 'Bernoulli':
-                z_mu, z_sigma, p = model(images)
+                z_mu, z_sigma, p = autoencoder(images)
                 output = torch.bernoulli(p)
 
                 display_batch("Binarized truth", images)
@@ -140,7 +140,7 @@ def main(**kwargs):
                 display_batch("Sampled reconstruction", output)
 
             elif model_sigma:
-                z_mu, z_sigma, out_mu, out_sigma = model(images)
+                z_mu, z_sigma, out_mu, out_sigma = autoencoder(images)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
                 display_batch("Truth", images)
@@ -148,12 +148,14 @@ def main(**kwargs):
                 # display_batch("Sampled reconstruction", output)
 
             else:
-                z_mu, z_sigma, out_mu = model(images)
+                z_mu, z_sigma, out_mu = autoencoder(images)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
                 display_batch("Truth", images)
                 display_batch("Mean reconstruction", out_mu)
                 # display_batch("Sampled reconstruction", output)
+    
+    print(model.save_model(epochs, autoencoder, optimizer))
 
 
 if __name__ == "__main__":
