@@ -35,7 +35,8 @@ def main(**kwargs):
     # Retrieve arguments
     dataset = kwargs.get('dataset', defaults['dataset'])
     decoder_type = kwargs.get('decoder_type', defaults['decoder_type'])
-    model_sigma = kwargs.get('model_sigma', defaults['model_sigma'])
+    if decoder_type == 'Gaussian':
+        model_sigma = kwargs.get('model_sigma', defaults['model_sigma'])
     epochs = kwargs.get('epochs', defaults['epochs'])
     batch_size = kwargs.get('batch_size', defaults['batch_size'])
     lr = kwargs.get('learning_rate', defaults['learning_rate'])
@@ -65,7 +66,10 @@ def main(**kwargs):
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
     
     # Create model and optimizer
-    model = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
+    if decoder_type == 'Bernoulli':
+        model = VAE(latent_dim, dataset, decoder_type).to(device)
+    else:
+        model = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
     # Train announce
