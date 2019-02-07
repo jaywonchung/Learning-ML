@@ -17,6 +17,8 @@ def check_args(args):
 
     assert args.decoder_type=='Gaussian' or args.decoder_type=='Bernoulli', "Decoder type must be either 'Gaussian' for 'Bernoulli"
 
+    assert not (args.dataset=='CIFAR10' and args.decoder_type=='Bernoulli'), "Bernoulli decoder only supports MNIST"
+
     assert args.model_sigma==True or args.model_sigma==False, "Model sigma must be either True or False"
     
     assert args.epochs >= 1, "Number of epochs must be a positive integer"
