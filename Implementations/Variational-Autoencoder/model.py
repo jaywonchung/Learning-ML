@@ -7,7 +7,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 class GaussianEncoder(nn.Module):
 	"""Gaussian encoder module for VAE"""
 
-	def __init__(self, latent_dim=2, dataset='MNIST'):
+	def __init__(self, latent_dim, dataset):
         """
         Constructor for the GaussianEncoder class
 
@@ -88,7 +88,7 @@ class GaussianEncoder(nn.Module):
 class BernoulliDecoder(nn.Module):
 	"""BernoulliDecoder module for VAE with MNIST dataset"""
 
-	def __init__(self, latent_dim=2):
+	def __init__(self, latent_dim):
         """
         Constructor for the BernoulliDecoder class
         Can only model black and white MNIST images
@@ -140,7 +140,7 @@ class BernoulliDecoder(nn.Module):
 class GaussianDeccoder(nn.Module):
     """GaussianDecoder module for VAE"""
 
-    def __init__(self, latent_dim=2, dataset='MNIST', model_sigma=True):
+    def __init__(self, latent_dim, dataset, model_sigma=False):
         """
         Constructor for the GaussianDecoder class
 
@@ -244,7 +244,7 @@ class GaussianDeccoder(nn.Module):
 class VAE(nn.Module):
 	"""Variational Autoencoder module that wraps one encoder and one decoder module."""
 	
-	def __init__(self, latent_dim=2, dataset='MNIST', decoder_type='Bernoulli', model_sigma=True):
+	def __init__(self, latent_dim, dataset, decoder_type, model_sigma=False):
         """
         Constructor for VAE class
 
@@ -277,4 +277,5 @@ class VAE(nn.Module):
         """
         z_mu, z_sigma = self.encoder(x)
         z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)
-        return self.decoder(z)
+        param = self.decoder(z)
+        return (z_mu, z_sigma) + param
