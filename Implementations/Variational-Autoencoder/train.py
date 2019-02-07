@@ -69,7 +69,7 @@ def main(**kwargs):
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
     # Train announce
-    print(f'Start training with VAE with Gaussian encoder and {decoder_type} decoder')
+    print(f'Start training with VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
     model.train()
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
