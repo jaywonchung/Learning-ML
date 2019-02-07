@@ -133,24 +133,24 @@ def main(**kwargs):
                 z_mu, z_sigma, p = autoencoder(first_train_batch)
                 output = torch.bernoulli(p)
 
-                display_batch("Binarized truth", first_train_batch, data, False)
-                display_batch("Mean reconstruction", p, data, True)
-                display_batch("Sampled reconstruction", output, data, True)
+                display_batch("Binarized-truth", first_train_batch, data, epoch==0)
+                display_batch("Mean-reconstruction", p, data, True)
+                display_batch("Sampled-reconstruction", output, data, True)
 
             elif model_sigma:
                 z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch, data, False)
-                display_batch("Mean reconstruction", out_mu, data, True)
+                display_batch("Truth", first_train_batch, data, epoch==0)
+                display_batch("Mean-reconstruction", out_mu, data, True)
                 # display_batch("Sampled reconstruction", output, data, True)
 
             else:
                 z_mu, z_sigma, out_mu = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch, data, False)
-                display_batch("Mean reconstruction", out_mu, data, True)
+                display_batch("Truth", first_train_batch, data, epoch==0)
+                display_batch("Mean-reconstruction", out_mu, data, True)
                 # display_batch("Sampled reconstruction", output, data, True)
 
     print('Saved model to /' + save_model(epochs, autoencoder, optimizer))
