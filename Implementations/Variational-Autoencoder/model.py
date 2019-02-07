@@ -11,29 +11,14 @@ def save_model(epoch, model, optimizer, PATH=None):
         PATH = f'saved_model/{model.dataset}-{model.decoder_type}-e{epoch}-z{model.latent_dim}' + \
             datetime.datetime.now().strftime("%Y-%m-%d-%I:%M")
 
-    state = {
-        'epoch': epoch,
-        'decoder_type': model.decoder_type,
-        'dataset': model.dataset,
-        'model_sigma': model.model_sigma,
-        'latent_dim': model.latent_dim,
-        'state_dict': model.state_dict(),
-        'optimizer': optimizer.state_dict()
-    }
-
-    torch.save(state, PATH)
+    torch.save(model, PATH)
 
     return PATH
 
-def load_model(PATH):
-    old_state = torch.load(PATH)
-
-    model = VAE(old_state['latent_dim'], old_state['dataset'], old_state['decoder_type'], old_state['model_sigma']).to(device)
-    optimizer = optim.Adam(model.parameters())
-
-    model.load_state_dict(old_state['state_dict'])
-    optimizer.load_state_dict(old_state['optimizer'])
-
+def load_model(PATH, lr):
+    model = torch.load(PATH)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    
     return model, optimizer
 
 
