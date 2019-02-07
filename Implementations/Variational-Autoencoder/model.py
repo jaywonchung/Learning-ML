@@ -4,6 +4,36 @@ import torch.nn.functional as F
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+def save_model(epoch, model, optimizer, PATH=None):
+    if PATH is None:
+        PATH = datetime.datetime.now().strftime("%Y-%d-%B-%I:%M")
+
+    state = {
+        'epoch': epoch,
+        'decoder_type': model.decoder_type,
+        'dataset': model.dataset,
+        'model_sigma': model.model_sigma,
+        'latent_dim': model.latent_dim,
+        'state_dict': model.state_dict(),
+        'optimizer': optimizer.state_dict()
+    }
+
+    torch.save(state, PATH)
+
+    return PATH
+
+def load_model(PATH):
+    old_state = torch.load(PATH)
+
+    model = VAE(old_state['latent_dim'], old_state['dataset'], old_state['decoder_type'], old_state['model_sigma']).to(device)
+    optimizer = optim.Adam(model.parameters())
+
+    model.load_state_dict(old_state['state_dict'])
+    optimizer.load_state_dict(old_state['optimizer'])
+
+    return model, optimizer
+
+
 class GaussianEncoder(nn.Module):
     """Gaussian encoder module for VAE"""
 
@@ -257,6 +287,10 @@ class VAE(nn.Module):
                          If True, forward method returns (mu, sigma). Else, returns only mu.
         """
         super().__init__()
+        self.latent_dim = latent_dim
+        self.dataset = dataset
+        self.decoder_type = decoder_type
+
         self.encoder = GaussianEncoder(latent_dim, dataset)
         if decoder_type == 'Bernoulli':
             self.decoder = BernoulliDecoder(latent_dim)
