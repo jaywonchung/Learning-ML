@@ -13,7 +13,7 @@ defaults = {
 
 def check_args(args):
     """Check commandline argument validity."""
-    assert args.dataset=='MNIST' or args.dataset=='CIFAR10', "Dataset must be either 'MNIST' for 'CIFAR10"
+    assert args.dataset=='MNIST' or args.dataset=='CIFAR10', "Dataset must be either 'MNIST' for 'CIFAR10'"
 
     assert args.decoder_type=='Gaussian' or args.decoder_type=='Bernoulli', "Decoder type must be either 'Gaussian' for 'Bernoulli"
 
