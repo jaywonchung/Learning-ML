@@ -128,7 +128,6 @@ def main(**kwargs):
 
         elif model_sigma:
             z_mu, z_sigma, out_mu, out_sigma = model(images)
-            assert out_mu.shape == out_sigma.shape
             output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
             display_batch("Truth", images)
