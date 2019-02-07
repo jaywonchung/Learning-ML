@@ -8,7 +8,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def save_model(epoch, model, optimizer, PATH=None):
     if PATH is None:
-        PATH = 'saved_model/' + datetime.datetime.now().strftime("%Y-%m-%d-%I:%M")
+        PATH = f'saved_model/{model.dataset}-{model.decoder_type}-e{epoch}-z{model.latent_dim}'
+               + datetime.datetime.now().strftime("%Y-%m-%d-%I:%M")
 
     state = {
         'epoch': epoch,
