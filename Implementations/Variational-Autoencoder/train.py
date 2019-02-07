@@ -77,7 +77,6 @@ def main(**kwargs):
             autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
         else:
             autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
-        autoencoder = torch.nn.DataParallel(autoencoder)
         optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
     # Create learning rate scheduler
