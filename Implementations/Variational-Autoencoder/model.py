@@ -14,7 +14,7 @@ def save_model(epoch, model, PATH):
 
 def load_model(PATH, lr):
     model = torch.load(PATH)
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     return model, optimizer
 
