@@ -3,7 +3,9 @@ import argparse
 defaults = {
 	"dataset": True,
 	"decoder_type": 'Gaussian',
-	"epochs": 10,]
+	"model_sigma": False,
+	"epochs": 10,
+	"batch_size": 64,
 	"learning_rate": 3e-4,
 	"latent_dim": 10,
 	"print_every": 1
@@ -18,6 +20,8 @@ def check_args(args):
 	assert args.model_sigma==True or args.model_sigma==False, "Model sigma must be either True or False"
 	
 	assert args.epochs >= 1, "Number of epochs must be a positive integer"
+
+	assert args.batch_size >= 1, "Size of batch must be a positive integer"
 	
 	assert args.learning_rate > 0, "Learning rate must be positive"
 	
@@ -43,6 +47,9 @@ def get_args():
 	
 	parser.add_argument("-e", "--epochs",
 		type=int, default=defaults['epochs'], help="Number of epochs to train")
+
+	parser.add_argument("-b", "--batch_size",
+		type=int, default=defaults['batch_size'], help="Size of batch at training/testing")
 	
 	parser.add_argument("-lr", "--learning_rate",
 		type=float, default=defaults['learning_rate'], help="Learning rate for adam optimizer")
