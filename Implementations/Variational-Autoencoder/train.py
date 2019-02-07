@@ -127,7 +127,7 @@ def main(**kwargs):
         scheduler.step(sum(loss_hist[-100:])/100)
 
         # Display training result with test set
-        data = f'-{decoder_type}-z{latent_dim}-e{epoch}.png'
+        data = f'-{decoder_type}-z{latent_dim}-e{epoch+1}.png'
         with torch.no_grad():
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_train_batch)
