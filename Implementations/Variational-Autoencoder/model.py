@@ -217,8 +217,8 @@ class GaussianDecoder(nn.Module):
             z = F.relu(self.bn3(self.deconv3(z)))
             if self.model_sigma:
                 gaussian = self.deconv4(z)
-                mu = torch.sigmoid(gaussian[:, 0, :, :])
-                sigma = 1e-6 + F.softplus(gaussian[:, 1, :, :])
+                mu = torch.sigmoid(gaussian[:, 0, :, :]).unsqueeze(1)
+                sigma = 1e-6 + F.softplus(gaussian[:, 1, :, :]).unsqueeze(1)
                 return mu, sigma
             else:
                 mu = torch.sigmoid(self.deconv4(z))
@@ -232,8 +232,8 @@ class GaussianDecoder(nn.Module):
             z = F.relu(self.deconv4(z))
             if self.model_sigma:
                 gaussian = self.deconv5(z)
-                mu = torch.sigmoid(gaussian[:, :3, :, :])
-                sigma = 1e-6 + F.softplus(gaussian[:, 3:, :, :])
+                mu = torch.sigmoid(gaussian[:, :3, :, :]).unsqueeze(1)
+                sigma = 1e-6 + F.softplus(gaussian[:, 3:, :, :]).unsqueeze(1)
                 return mu, sigma
             else:
                 mu = torch.sigmoid(self.deconv5(z))
