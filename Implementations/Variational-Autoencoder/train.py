@@ -116,38 +116,38 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
             
-            if batch_ind != 0 and batch_ind % 5 == 0:
-                lr /= 10.
-                optimizer = optim.Adam(model.parameters(), lr=lr)
+        if epoch != 0 and epoch % 5 == 0:
+            lr /= 10.
+            optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    # Display training result with test set
-    with torch.no_grad():
-        images, _ = iter(test_loader).next()
-        images = images.to(device)
+        # Display training result with test set
+        with torch.no_grad():
+            images, _ = iter(test_loader).next()
+            images = images.to(device)
 
-        if decoder_type == 'Bernoulli':
-            z_mu, z_sigma, p = model(images)
-            output = torch.bernoulli(p)
+            if decoder_type == 'Bernoulli':
+                z_mu, z_sigma, p = model(images)
+                output = torch.bernoulli(p)
 
-            display_batch("Binarized truth", images)
-            display_batch("Mean reconstruction", p)
-            display_batch("Sampled reconstruction", output)
+                display_batch("Binarized truth", images)
+                display_batch("Mean reconstruction", p)
+                display_batch("Sampled reconstruction", output)
 
-        elif model_sigma:
-            z_mu, z_sigma, out_mu, out_sigma = model(images)
-            output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
+            elif model_sigma:
+                z_mu, z_sigma, out_mu, out_sigma = model(images)
+                output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-            display_batch("Truth", images)
-            display_batch("Mean reconstruction", out_mu)
-            display_batch("Sampled reconstruction", output)
+                display_batch("Truth", images)
+                display_batch("Mean reconstruction", out_mu)
+                display_batch("Sampled reconstruction", output)
 
-        else:
-            z_mu, z_sigma, out_mu = model(images)
-            output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
+            else:
+                z_mu, z_sigma, out_mu = model(images)
+                output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-            display_batch("Truth", images)
-            display_batch("Mean reconstruction", out_mu)
-            display_batch("Sampled reconstruction", output)
+                display_batch("Truth", images)
+                display_batch("Mean reconstruction", out_mu)
+                display_batch("Sampled reconstruction", output)
 
 
 if __name__ == "__main__":
