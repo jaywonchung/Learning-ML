@@ -96,7 +96,7 @@ def main(**kwargs):
                 z_mu, z_sigma, out_mu = autoencoder(input_data)
 
             # Calculate loss
-            KL_divergence_i = 0.5 * torch.sum(z_mu**2 + z_sigma**2 - torch.log(1e-8+z_sigma**2) - 1., dim=1)
+            KL_divergence_i = 0.5 * torch.sum(z_mu**2 + z_sigma**2 - torch.log(1e-8+z_sigma**2) - 1., dim=(1,2,3))
             if decoder_type == 'Bernoulli':
                 reconstruction_loss_i = torch.sum(input_data*torch.log(1e-8+p) + (1.-input_data)*torch.log(1e-8+1.-p), dim=(1,2,3))
             elif model_sigma:
