@@ -74,7 +74,7 @@ def main(**kwargs):
     optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
     # Create learning rate scheduler
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', verbose=True)
     
     # Announce current mode
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
