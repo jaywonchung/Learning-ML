@@ -133,7 +133,7 @@ class BernoulliDecoder(nn.Module):
         z = F.relu(self.bn2(self.fc2(z)))
         z = z.view(-1, 128, 7, 7)
         z = F.relu(self.bn3(self.deconv3(z)))
-        z = F.sigmoid(self.deconv4(z))
+        z = torch.sigmoid(self.deconv4(z))
         return z,
 
 
@@ -217,11 +217,11 @@ class GaussianDecoder(nn.Module):
             z = F.relu(self.bn3(self.deconv3(z)))
             if self.model_sigma:
                 gaussian = self.deconv4(z)
-                mu = F.sigmoid(gaussian[:, 0, :, :])
+                mu = torch.sigmoid(gaussian[:, 0, :, :])
                 sigma = 1e-6 + F.softplus(gaussian[:, 1, :, :])
                 return mu, sigma
             else:
-                mu = F.sigmoid(self.deconv4(z))
+                mu = torch.sigmoid(self.deconv4(z))
                 return mu,
         
         elif self.dataset == 'CIFAR10':
@@ -231,11 +231,11 @@ class GaussianDecoder(nn.Module):
             z = F.relu(self.deconv4(z))
             if self.model_sigma:
                 gaussian = self.deconv5(z)
-                mu = F.sigmoid(gaussian[:, :3, :, :])
+                mu = torch.sigmoid(gaussian[:, :3, :, :])
                 sigma = 1e-6 + F.softplus(gaussian[:, 3:, :, :])
                 return mu, sigma
             else:
-                mu = F.sigmoid(self.deconv5(z))
+                mu = torch.sigmoid(self.deconv5(z))
                 return mu,
 
 
