@@ -72,6 +72,9 @@ def main(**kwargs):
         model = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
+    # Create learning rate scheduler
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
+    
     # Announce current mode
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
 
@@ -116,9 +119,11 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
             
-        if epoch != 0 and epoch % 5 == 0:
-            lr /= 10.
-            optimizer = optim.Adam(model.parameters(), lr=lr)
+            if batch_ind == len(train_data)-1:
+                val_loss = loss
+        
+        # Learning rate decay
+        scheduler.step(val_loss)
 
         # Display training result with test set
         with torch.no_grad():
