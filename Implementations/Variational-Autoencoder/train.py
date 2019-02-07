@@ -145,7 +145,7 @@ def main(**kwargs):
 
                 display_batch("Truth", images)
                 display_batch("Mean reconstruction", out_mu)
-                display_batch("Sampled reconstruction", output)
+                # display_batch("Sampled reconstruction", output)
 
             else:
                 z_mu, z_sigma, out_mu = model(images)
@@ -153,7 +153,7 @@ def main(**kwargs):
 
                 display_batch("Truth", images)
                 display_batch("Mean reconstruction", out_mu)
-                display_batch("Sampled reconstruction", output)
+                # display_batch("Sampled reconstruction", output)
 
 
 if __name__ == "__main__":
