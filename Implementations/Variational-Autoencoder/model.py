@@ -226,6 +226,7 @@ class GaussianDecoder(nn.Module):
         
         elif self.dataset == 'CIFAR10':
             z = F.relu(self.bn1(self.fc1(z)))
+            z = z.view(-1, 448, 2, 2)
             z = F.relu(self.bn2(self.deconv2(z)))
             z = F.relu(self.deconv3(z))
             z = F.relu(self.deconv4(z))
