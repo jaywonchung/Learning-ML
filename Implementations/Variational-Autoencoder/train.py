@@ -116,9 +116,11 @@ def main(**kwargs):
 
         if decoder_type == 'Bernoulli':
             z_mu, z_sigma, p = model(input_data)
-
+            output = torch.distributions.Bernoulli(p).rsample(images.shape)
+            display_batch("Binarized truth", images)
         elif model_sigma:
             z_mu, z_sigma, out_mu, out_sigma = model(input_data)
+            output = torch.distributions.MultivariateNormal()
         else:
             z_mu, z_sigma, out_mu = model(input_data)
 
