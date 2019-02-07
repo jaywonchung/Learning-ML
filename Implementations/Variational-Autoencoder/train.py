@@ -123,16 +123,16 @@ def main(**kwargs):
 
         elif model_sigma:
             z_mu, z_sigma, out_mu, out_sigma = model(images)
-            output = torch.normal(out_mu, out_sigma)
+            output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
             display_batch("Truth", images)
-            display_batch("Reconstruction", output.reshape(images.shape))
+            display_batch("Reconstruction", output)
         else:
             z_mu, z_sigma, out_mu = model(images)
-            output = torch.normal(out_mu, torch.ones_like(out_mu))
+            output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
             display_batch("Truth", images)
-            display_batch("Reconstruction", output.reshape(images.shape))
+            display_batch("Reconstruction", output)
 
 
 if __name__ == "__main__":
