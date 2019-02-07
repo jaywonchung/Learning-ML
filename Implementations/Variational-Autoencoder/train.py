@@ -81,6 +81,7 @@ def main(**kwargs):
     # Train
     loss_hist = []
     autoencoder.train()
+    first_train_batch, _ = iter(train_loader).next()
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
             input_data = input_data.to(device)
@@ -127,30 +128,29 @@ def main(**kwargs):
 
         # Display training result with test set
         with torch.no_grad():
-            images, _ = iter(test_loader).next()
-            images = images.to(device)
+            first_train_batch = first_train_batch.to(device)
 
             if decoder_type == 'Bernoulli':
-                z_mu, z_sigma, p = autoencoder(images)
+                z_mu, z_sigma, p = autoencoder(first_train_batch)
                 output = torch.bernoulli(p)
 
-                display_batch("Binarized truth", images)
+                display_batch("Binarized truth", first_train_batch)
                 display_batch("Mean reconstruction", p)
                 display_batch("Sampled reconstruction", output)
 
             elif model_sigma:
-                z_mu, z_sigma, out_mu, out_sigma = autoencoder(images)
+                z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-                display_batch("Truth", images)
+                display_batch("Truth", first_train_batch)
                 display_batch("Mean reconstruction", out_mu)
                 # display_batch("Sampled reconstruction", output)
 
             else:
-                z_mu, z_sigma, out_mu = autoencoder(images)
+                z_mu, z_sigma, out_mu = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-                display_batch("Truth", images)
+                display_batch("Truth", first_train_batch)
                 display_batch("Mean reconstruction", out_mu)
                 # display_batch("Sampled reconstruction", output)
     
