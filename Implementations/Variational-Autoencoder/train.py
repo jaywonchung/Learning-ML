@@ -79,11 +79,11 @@ def main(**kwargs):
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
 
     # Train
-    loss_hist = []
     autoencoder.train()
     first_train_batch, _ = iter(train_loader).next()
     first_train_batch = first_train_batch.to(device)
     for epoch in range(epochs):
+        loss_hist = []
         for batch_ind, (input_data, _) in enumerate(train_loader):
             input_data = input_data.to(device)
             
@@ -114,7 +114,7 @@ def main(**kwargs):
             
             # Update parameters
             optimizer.step()
-            
+
             # Print progress
             if batch_ind % print_every == 0:
                 train_log = 'Epoch {:2d}/{:2d}\tLoss: {:.6f}\t\tTrain: [{}/{} ({:.0f}%)]      '.format(
@@ -123,37 +123,37 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
 
-        
         # Learning rate decay
         scheduler.step(sum(loss_hist[-100:])/100)
 
         # Display training result with test set
+        data = f'-{decoder_type}-z{latent_dim}-e{epoch}.png'
         with torch.no_grad():
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_train_batch)
                 output = torch.bernoulli(p)
 
-                display_batch("Binarized truth", first_train_batch)
-                display_batch("Mean reconstruction", p)
-                display_batch("Sampled reconstruction", output)
+                display_batch("Binarized truth", first_train_batch, data, False)
+                display_batch("Mean reconstruction", p, data, True)
+                display_batch("Sampled reconstruction", output, data, True)
 
             elif model_sigma:
                 z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch)
-                display_batch("Mean reconstruction", out_mu)
-                # display_batch("Sampled reconstruction", output)
+                display_batch("Truth", first_train_batch, data, False)
+                display_batch("Mean reconstruction", out_mu, data, True)
+                # display_batch("Sampled reconstruction", output, data, True)
 
             else:
                 z_mu, z_sigma, out_mu = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch)
-                display_batch("Mean reconstruction", out_mu)
-                # display_batch("Sampled reconstruction", output)
-    
-    print(save_model(epochs, autoencoder, optimizer))
+                display_batch("Truth", first_train_batch, data, False)
+                display_batch("Mean reconstruction", out_mu, data, True)
+                # display_batch("Sampled reconstruction", output, data, True)
+
+    print('Saved model to /' + save_model(epochs, autoencoder, optimizer))
 
 
 if __name__ == "__main__":
