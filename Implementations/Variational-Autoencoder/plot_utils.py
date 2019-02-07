@@ -7,6 +7,6 @@ def display_batch(title, batch, data, save):
     im = torchvision.utils.make_grid(batch)
     plt.title(title)
     plt.imshow(np.transpose(im.cpu().numpy(), (1, 2, 0)), cmap='gray')
-    plt.show()
     if save:
         plt.savefig(data)
+    plt.show()
