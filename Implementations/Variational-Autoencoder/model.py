@@ -292,6 +292,7 @@ class VAE(nn.Module):
         self.latent_dim = latent_dim
         self.dataset = dataset
         self.decoder_type = decoder_type
+        self.model_sigma = model_sigma
 
         self.encoder = GaussianEncoder(latent_dim, dataset)
         if decoder_type == 'Bernoulli':
