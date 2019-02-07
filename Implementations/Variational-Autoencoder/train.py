@@ -79,6 +79,7 @@ def main(**kwargs):
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
 
     # Train
+    loss_hist = []
     model.train()
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
@@ -103,6 +104,8 @@ def main(**kwargs):
                 reconstruction_loss_i = -0.5 * torch.sum((input_data-out_mu)**2, dim=(1,2,3))
             ELBO_i = reconstruction_loss_i - KL_divergence_i
             loss = -torch.mean(ELBO_i)
+
+            loss_hist.append(loss)
             
             # Backward propagation
             optimizer.zero_grad()
@@ -121,7 +124,7 @@ def main(**kwargs):
 
         
         # Learning rate decay
-        scheduler.step(loss)
+        scheduler.step(sum(loss_hist[-100:])/100)
 
         # Display training result with test set
         with torch.no_grad():
