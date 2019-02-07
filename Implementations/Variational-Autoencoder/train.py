@@ -155,7 +155,7 @@ def main(**kwargs):
                 display_batch("Mean reconstruction", out_mu)
                 # display_batch("Sampled reconstruction", output)
     
-    print(autoencoder.save_model(epochs, autoencoder, optimizer))
+    print(save_model(epochs, autoencoder, optimizer))
 
 
 if __name__ == "__main__":
