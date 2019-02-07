@@ -123,20 +123,25 @@ def main(**kwargs):
             output = torch.bernoulli(p)
 
             display_batch("Binarized truth", images)
-            display_batch("Reconstruction", output)
+            display_batch("Mean reconstruction", p)
+            display_batch("Sampled reconstruction", output)
 
         elif model_sigma:
             z_mu, z_sigma, out_mu, out_sigma = model(images)
+            assert out_mu.shape == out_sigma.shape
             output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
             display_batch("Truth", images)
-            display_batch("Reconstruction", output)
+            display_batch("Mean reconstruction", out_mu)
+            display_batch("Sampled reconstruction", output)
+
         else:
             z_mu, z_sigma, out_mu = model(images)
             output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
             display_batch("Truth", images)
-            display_batch("Reconstruction", output)
+            display_batch("Mean reconstruction", out_mu)
+            display_batch("Sampled reconstruction", output)
 
 
 if __name__ == "__main__":
