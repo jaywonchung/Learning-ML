@@ -82,6 +82,7 @@ def main(**kwargs):
     loss_hist = []
     autoencoder.train()
     first_train_batch, _ = iter(train_loader).next()
+    first_train_batch = first_train_batch.to(device)
     for epoch in range(epochs):
         for batch_ind, (input_data, _) in enumerate(train_loader):
             input_data = input_data.to(device)
@@ -128,8 +129,6 @@ def main(**kwargs):
 
         # Display training result with test set
         with torch.no_grad():
-            first_train_batch = first_train_batch.to(device)
-
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_train_batch)
                 output = torch.bernoulli(p)
