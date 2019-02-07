@@ -27,6 +27,7 @@ def main(**kwargs):
         decoder_type: How to model the output pixels, Gaussian or Bernoulli
         model_sigma: In case of Gaussian decoder, whether to model the sigmas too
 		epochs: How many epochs to train model
+        batch_size: Size of training / testing batch
 		lr: Learning rate
 		latent_dim: Dimension of latent variable
 		print_every: How often to print training progress
@@ -36,6 +37,7 @@ def main(**kwargs):
     decoder_type = kwargs.get('decoder_type', defaults['decoder_type'])
     model_sigma = kwargs.get('model_sigma', defaults['model_sigma'])
 	epochs = kwargs.get('epochs', defaults['epochs'])
+	batch_size = kwargs.get('batch_size', defaults['batch_size'])
 	lr = kwargs.get('learning_rate', defaults['learning_rate'])
 	latent_dim = kwargs.get('latent_dim', defaults['latent_dim'])
 	print_every = kwargs.get('print_every', defaults['print_every'])
@@ -59,8 +61,8 @@ def main(**kwargs):
             root='CIFAR10', train=False, transform=trsf, download=True)
 	
 	# Create dataloader
-	train_loader = torch.utils.data.DataLoader(train_data, batch_size=64, shuffle=True)
-	test_loader = torch.utils.data.DataLoader(test_data, batch_size=64, shuffle=False)
+	train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
+	test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
 	
 	# Create model and optimizer
     model = VAE(latent_dim, dataset, decoder_type).to(device)
@@ -73,10 +75,23 @@ def main(**kwargs):
 			input_data = input_data.to(device)
 			
 			# Forward propagation
-			output = model(input_data)
+            if decoder_type == 'Bernoulli':
+			    z_mu, z_sigma, p = model(input_data)
+            elif model_sigma:
+                z_mu, z_sigma, out_mu, out_sigma = model(input_data)
+            else:
+                z_mu, z_sigma, out_mu = model(input_data)
 
 			# Calculate loss
-            
+            KL_divergence_i = 0.5 * torch.sum(z_mu**2 + z_sigma**2 - torch.log(1e-8+z_sigma**2) - 1., dim=1)
+            if decoder_type == 'Bernoulli':
+                reconstruction_loss_i = torch.sum(input_data*torch.log(p) + (1.-input_data)*torch.log(1.-p), dim=(1,2,3))
+            elif model_sigma:
+                reconstruction_loss_i = -0.5 * torch.sum(torch.log(out_sigma**2) + ((input_data-out_mu)**2)/(out_sigma**2), dim=(1,2,3))
+            else:
+                reconstruction_loss_i = -0.5 * torch.sum((input_data-out_mu)**2, dim=(1,2,3))
+            ELBO_i = -reconstruction_loss_i + KL_divergence_i
+            loss = -torch.mean(ELBO_i)
 			
 			# Backward propagation
 			optimizer.zero_grad()
