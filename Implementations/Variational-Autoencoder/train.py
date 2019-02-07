@@ -88,7 +88,7 @@ def main(**kwargs):
             if decoder_type == 'Bernoulli':
                 reconstruction_loss_i = torch.sum(input_data*torch.log(1e-8+p) + (1.-input_data)*torch.log(1e-8+1.-p), dim=(1,2,3))
             elif model_sigma:
-                reconstruction_loss_i = -0.5 * torch.sum(torch.log(out_sigma**2) + ((input_data-out_mu)**2)/(out_sigma**2), dim=(1,2,3))
+                reconstruction_loss_i = -0.5 * torch.sum(torch.log(1e-8+out_sigma**2) + ((input_data-out_mu)**2)/(out_sigma**2), dim=(1,2,3))
             else:
                 reconstruction_loss_i = -0.5 * torch.sum((input_data-out_mu)**2, dim=(1,2,3))
             ELBO_i = reconstruction_loss_i - KL_divergence_i
