@@ -98,7 +98,7 @@ def main(**kwargs):
             # Calculate loss
             KL_divergence_i = 0.5 * torch.sum(z_mu**2 + z_sigma**2 - torch.log(1e-8+z_sigma**2) - 1., dim=1)
             if decoder_type == 'Bernoulli':
-                reconstruction_loss_i = torch.sum(F.binary_cross_entropy(p, input_data, reduction='none'), dim=(1,2,3))
+                reconstruction_loss_i = -torch.sum(F.binary_cross_entropy(p, input_data, reduction='none'), dim=(1,2,3))
             elif model_sigma:
                 reconstruction_loss_i = -0.5 * torch.sum(torch.log(1e-8+6.28*out_sigma**2) + ((input_data-out_mu)**2)/(out_sigma**2), dim=(1,2,3))
             else:
