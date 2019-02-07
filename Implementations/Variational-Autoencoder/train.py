@@ -127,6 +127,10 @@ def main(**kwargs):
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
 
+        # Save model every 20 epochs
+        if epoch != 0 and epoch%20 == 0:
+            print('Temporarily saved model to ' + save_model(epoch, autoencoder, optimizer, f'/saved_model/tmp-e{epoch}'))
+
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}.png'
         with torch.no_grad():
