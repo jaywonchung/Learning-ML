@@ -8,7 +8,8 @@ defaults = {
     "batch_size": 64,
     "learning_rate": 3e-4,
     "latent_dim": 10,
-    "print_every": 1
+    "print_every": 1,
+    "resume_path": None
 }
 
 def check_args(args):
@@ -29,7 +30,7 @@ def check_args(args):
     
     assert args.latent_dim >= 1, "Latent dimension must be a positive integer"
     
-    assert args.print_every >= 1, "print_every must be a positive integer"
+    assert args.print_every >= 1, "Print_every must be a positive integer"
     
     return args
 
@@ -61,5 +62,8 @@ def get_args():
     
     parser.add_argument("-p", "--print_every",
         type=int, default=defaults['print_every'], help="How often to print loss progress")
+
+    parser.add_argument("-r", "--resume_path",
+        type=str, default=defaults['resume_path'], help="If we wish to resume training, provide the saved model path here")
     
     return check_args(parser.parse_args())

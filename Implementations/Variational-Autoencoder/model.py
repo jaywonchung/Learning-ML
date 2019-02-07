@@ -11,13 +11,7 @@ def save_model(epoch, model, PATH):
     torch.save(model, PATH)
 
     return PATH
-
-def load_model(PATH, lr):
-    model = torch.load(PATH)
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-
-    return model, optimizer
-
+    
 
 class GaussianEncoder(nn.Module):
     """Gaussian encoder module for VAE"""

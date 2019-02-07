@@ -31,6 +31,7 @@ def main(**kwargs):
         lr: Learning rate
         latent_dim: Dimension of latent variable
         print_every: How often to print training progress
+        resume_path: The path of saved model with which to resume training
     """
     # Retrieve arguments
     dataset = kwargs.get('dataset', defaults['dataset'])
@@ -42,6 +43,7 @@ def main(**kwargs):
     lr = kwargs.get('learning_rate', defaults['learning_rate'])
     latent_dim = kwargs.get('latent_dim', defaults['latent_dim'])
     print_every = kwargs.get('print_every', defaults['print_every'])
+    resume_path = kwargs.get('resume_path', defaults['resume_path'])
     
     # Specify dataset transform on load
     if decoder_type == 'Bernoulli':
@@ -66,12 +68,17 @@ def main(**kwargs):
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
     
     # Create model and optimizer
-    if decoder_type == 'Bernoulli':
-        autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
+    if resume_path:
+        autoencoder = torch.load(resume_path).to(device)
+        optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
+        print('Loaded saved model ' + resume_path)
     else:
-        autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
-    autoencoder = torch.nn.DataParallel(autoencoder)
-    optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
+        if decoder_type == 'Bernoulli':
+            autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
+        else:
+            autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
+        autoencoder = torch.nn.DataParallel(autoencoder)
+        optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
     # Create learning rate scheduler
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', verbose=True)
