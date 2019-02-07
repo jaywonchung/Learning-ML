@@ -2,7 +2,7 @@ import torchvision
 import numpy as np
 import matplotlib.pyplot as plt
 
-def display_batch(title, batch, binarize=False):
+def display_batch(title, batch, data, save):
     """Display batch of image using plt"""
     if binarize:
         batch[batch>=0.5] = 1.
@@ -12,3 +12,5 @@ def display_batch(title, batch, binarize=False):
     plt.title(title)
     plt.imshow(np.transpose(im.cpu().numpy(), (1, 2, 0)), cmap='gray')
     plt.show()
+    if save:
+        plt.savefig(title+data)
