@@ -115,30 +115,25 @@ def main(**kwargs):
         images = images.to(device)
 
         if decoder_type == 'Bernoulli':
-            z_mu, z_sigma, p = model(input_data)
-            output = torch.distributions.Bernoulli(p).rsample(images.shape)
-            display_batch("Binarized truth", images)
-        elif model_sigma:
-            z_mu, z_sigma, out_mu, out_sigma = model(input_data)
-            output = torch.distributions.MultivariateNormal()
-        else:
-            z_mu, z_sigma, out_mu = model(input_data)
+            z_mu, z_sigma, p = model(images)
+            output = torch.bernoulli(p)
 
-        
-        if add_noise:
-            noise_images = F.dropout(images, p=0.5)
-            denoised_output = model(noise_images)
-            output = model(images)
-            display_batch("Binarized truth" if binarize_input else "Truth",
-                images, binarize_input)
-            display_batch("Truth with noise", noise_images, binarize_input)
-            display_batch("Reconstruction of noised image", output, binarize_input)
-            display_batch("Reconstruction of clean image", denoised_output, binarize_input)
+            display_batch("Binarized truth", images)
+            display_batch("Reconstruction", output)
+
+        elif model_sigma:
+            z_mu, z_sigma, out_mu, out_sigma = model(images)
+            output = torch.normal(out_mu, out_sigma)
+
+            display_batch("Truth", images)
+            display_batch("Reconstruction", output.reshape(images.shape))
         else:
-            output = model(images)
-            display_batch("Binarized truth" if binarize_input else "Truth",
-                images, binarize_input)
-            display_batch("Reconstruction", output, binarize_input)
+            z_mu, z_sigma, out_mu = model(images)
+            output = torch.normal(out_mu, torch.ones_like(out_mu))
+
+            display_batch("Truth", images)
+            display_batch("Reconstruction", output.reshape(images.shape))
+
 
 if __name__ == "__main__":
     args = get_args()
