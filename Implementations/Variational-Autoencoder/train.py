@@ -115,6 +115,10 @@ def main(**kwargs):
                                 100. * batch_ind / len(train_loader))
                 print(train_log, end='\r')
                 sys.stdout.flush()
+            
+            if batch_ind != 0 and batch_ind % 5 == 0:
+                lr /= 10.
+                optimizer = optim.Adam(model.parameters(), lr=lr)
 
     # Display training result with test set
     with torch.no_grad():
