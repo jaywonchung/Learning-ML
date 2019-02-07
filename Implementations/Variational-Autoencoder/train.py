@@ -124,7 +124,7 @@ def main(**kwargs):
                 sys.stdout.flush()
 
         # Learning rate decay
-        scheduler.step(sum(loss_hist[-100:])/100)
+        scheduler.step(sum(loss_hist)/len(loss_hist))
 
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}.png'
