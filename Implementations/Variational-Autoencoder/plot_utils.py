@@ -8,5 +8,5 @@ def display_batch(title, batch, data, save):
     plt.title(title)
     plt.imshow(np.transpose(im.cpu().numpy(), (1, 2, 0)), cmap='gray')
     if save:
-        plt.savefig('/results/'+title+data)
+        plt.savefig('results/'+title+data)
     plt.show()
