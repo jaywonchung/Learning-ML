@@ -21,7 +21,7 @@ def main(**kwargs):
     1. Retrieve arguments from kwargs
     2. Prepare data
     3. Train
-    4. Display first batch of test set
+    4. Display/save first batch of training set (truth and reconstructed) after every epoch
     
     Args:
         dataset: Which dataset to use
@@ -33,6 +33,12 @@ def main(**kwargs):
         latent_dim: Dimension of latent variable
         print_every: How often to print training progress
         resume_path: The path of saved model with which to resume training
+
+    Notes:
+        - Saves model to 'saved_model/' every 20 epochs and when done
+        - Capable of training from scratch and resuming (provide saved model location to argument resume_path)
+        - Schedules learning rate with optim.lr_scheduler.ReduceLROnPlateau
+            : Decays learning rate by 1/10 when mean loss of all training data does not decrease for 10 epochs
     """
     # Retrieve arguments
     dataset = kwargs.get('dataset', defaults['dataset'])
@@ -64,15 +70,15 @@ def main(**kwargs):
         test_data = datasets.CIFAR10(
             root='CIFAR10', train=False, transform=trsf, download=True)
     
-    # Create dataloader
+    # Instantiate dataloader
     train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
     
-    # Create model and optimizer
+    # Instantiate/Load model and optimizer
     if resume_path:
         autoencoder = torch.load(resume_path).to(device)
         optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
-        print('Loaded saved model ' + resume_path)
+        print('Loaded saved model at ' + resume_path)
     else:
         if decoder_type == 'Bernoulli':
             autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
@@ -80,7 +86,7 @@ def main(**kwargs):
             autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
         optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
-    # Create learning rate scheduler
+    # Instantiate learning rate scheduler
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', verbose=True)
     
     # Announce current mode
@@ -137,8 +143,8 @@ def main(**kwargs):
         scheduler.step(sum(loss_hist)/len(loss_hist))
 
         # Save model every 20 epochs
-        if epoch != 0 and epoch%20 == 0:
-            PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+        if epoch != 0 and epoch%20 == 0 and epoch!=epochs-1:
+            PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch+1}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
             torch.save(autoencoder, PATH)
             print('\vTemporarily saved model to ' + PATH)
 
@@ -169,9 +175,9 @@ def main(**kwargs):
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
-    PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+    PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
     torch.save(autoencoder, PATH)
-    print('Saved model to ' + PATH)
+    print('\vSaved model to ' + PATH)
 
 
 if __name__ == "__main__":
