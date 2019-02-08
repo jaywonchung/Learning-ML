@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 import torch
 import torch.optim as optim
@@ -85,10 +86,12 @@ def main(**kwargs):
     # Announce current mode
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
 
-    # Train
-    autoencoder.train()
+    # Prepare batch to display with plt
     first_train_batch, _ = iter(train_loader).next()
     first_train_batch = first_train_batch.to(device)
+
+    # Train
+    autoencoder.train()
     for epoch in range(epochs):
         loss_hist = []
         for batch_ind, (input_data, _) in enumerate(train_loader):
@@ -135,7 +138,9 @@ def main(**kwargs):
 
         # Save model every 20 epochs
         if epoch != 0 and epoch%20 == 0:
-            print('Temporarily saved model to ' + save_model(epoch, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}-'))
+            PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+            torch.save(autoencoder, PATH)
+            print('\vTemporarily saved model to ' + PATH)
 
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}'
@@ -164,7 +169,9 @@ def main(**kwargs):
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
-    print('Saved model to /' + save_model(epochs, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epochs}-z{latent_dim}'))
+    PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+    torch.save(autoencoder, PATH)
+    print('Saved model to ' + PATH)
 
 
 if __name__ == "__main__":
