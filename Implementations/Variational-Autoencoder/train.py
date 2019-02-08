@@ -95,8 +95,8 @@ def main(**kwargs):
     print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset from epoch {resume_epoch+1}')
 
     # Prepare batch to display with plt
-    first_train_batch, _ = iter(train_loader).next()
-    first_train_batch = first_train_batch.to(device)
+    first_test_batch, _ = iter(test_loader).next()
+    first_test_batch = first_test_batch.to(device)
 
     # Train
     autoencoder.train()
@@ -154,26 +154,26 @@ def main(**kwargs):
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}'
         with torch.no_grad():
             if decoder_type == 'Bernoulli':
-                z_mu, z_sigma, p = autoencoder(first_train_batch)
+                z_mu, z_sigma, p = autoencoder(first_test_batch)
                 output = torch.bernoulli(p)
 
-                display_and_save_batch("Binarized-truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Binarized-truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", p, data, save=True)
                 display_and_save_batch("Sampled-reconstruction", output, data, save=True)
 
             elif model_sigma:
-                z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_train_batch)
+                z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_test_batch)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-                display_and_save_batch("Truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, Tsave=rue)
 
             else:
-                z_mu, z_sigma, out_mu = autoencoder(first_train_batch)
+                z_mu, z_sigma, out_mu = autoencoder(first_test_batch)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-                display_and_save_batch("Truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
