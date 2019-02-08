@@ -33,6 +33,7 @@ def main(**kwargs):
         latent_dim: Dimension of latent variable
         print_every: How often to print training progress
         resume_path: The path of saved model with which to resume training
+        resume_epoch: In case of resuming, the number of epochs already done 
 
     Notes:
         - Saves model to folder 'saved_model/' every 20 epochs and when done
@@ -51,6 +52,7 @@ def main(**kwargs):
     latent_dim = kwargs.get('latent_dim', defaults['latent_dim'])
     print_every = kwargs.get('print_every', defaults['print_every'])
     resume_path = kwargs.get('resume_path', defaults['resume_path'])
+    resume_epoch = kwargs.get('resume_epoch', defaults['resume_epoch'])
     
     # Specify dataset transform on load
     if decoder_type == 'Bernoulli':
@@ -90,7 +92,7 @@ def main(**kwargs):
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', verbose=True)
     
     # Announce current mode
-    print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset')
+    print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset from epoch {resume_epoch+1}')
 
     # Prepare batch to display with plt
     first_train_batch, _ = iter(train_loader).next()
@@ -98,7 +100,7 @@ def main(**kwargs):
 
     # Train
     autoencoder.train()
-    for epoch in range(epochs):
+    for epoch in range(resume_epoch, epochs+resume_epoch):
         loss_hist = []
         for batch_ind, (input_data, _) in enumerate(train_loader):
             input_data = input_data.to(device)
@@ -133,8 +135,8 @@ def main(**kwargs):
 
             # Print progress
             if batch_ind % print_every == 0:
-                train_log = 'Epoch {:2d}/{:2d}\tLoss: {:.6f}\t\tTrain: [{}/{} ({:.0f}%)]      '.format(
-                    epoch+1, epochs, loss.cpu().item(), batch_ind+1, len(train_loader),
+                train_log = 'Epoch {:03d}/{:03d}\tLoss: {:.6f}\t\tTrain: [{}/{} ({:.0f}%)]           '.format(
+                    epoch+1, epochs+resume_epoch, loss.cpu().item(), batch_ind+1, len(train_loader),
                                 100. * batch_ind / len(train_loader))
                 print(train_log, end='\r')
                 sys.stdout.flush()
@@ -175,7 +177,8 @@ def main(**kwargs):
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
-    PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+    # Save final model
+    PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs+resume_epoch+}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
     torch.save(autoencoder, PATH)
     print('\vSaved model to ' + PATH)
 
