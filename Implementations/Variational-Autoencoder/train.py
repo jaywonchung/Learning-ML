@@ -178,7 +178,7 @@ def main(**kwargs):
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
     # Save final model
-    PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs+resume_epoch+}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
+    PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs+resume_epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
     torch.save(autoencoder, PATH)
     print('\vSaved model to ' + PATH)
 
