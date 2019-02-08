@@ -41,7 +41,7 @@ def generate_uniformly(num=64, grid_size=0.1, PATH=None, model=None):
     axis = (torch.arange(side) - side//2) * grid_size
     x = axis.reshape(1, -1)
     y = x_axis.transpose(0, 1)
-    z = torch.stack(torch.broadcast_tensors(x, y), 0)
+    z = torch.stack(torch.broadcast_tensors(x, y), 0).to(device)
 
     # Generate output from decoder
     output = model.decoder(z)
