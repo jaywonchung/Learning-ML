@@ -9,7 +9,7 @@ import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 
 from model import VAE, save_model
-from plot_utils import display_batch
+from plot_utils import display_and_save_batch
 from arguments import get_args, defaults
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -138,31 +138,31 @@ def main(**kwargs):
             print('Temporarily saved model to ' + save_model(epoch, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epoch}-z{latent_dim}-'))
 
         # Display training result with test set
-        data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}.png'
+        data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}'
         with torch.no_grad():
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_train_batch)
                 output = torch.bernoulli(p)
 
-                display_batch("Binarized-truth", first_train_batch, data, epoch==0)
-                display_batch("Mean-reconstruction", p, data, True)
-                display_batch("Sampled-reconstruction", output, data, True)
+                display_and_save_batch("Binarized-truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Mean-reconstruction", p, data, save=True)
+                display_and_save_batch("Sampled-reconstruction", output, data, save=True)
 
             elif model_sigma:
                 z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch, data, epoch==0)
-                display_batch("Mean-reconstruction", out_mu, data, True)
-                # display_batch("Sampled reconstruction", output, data, True)
+                display_and_save_batch("Truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
+                # display_and_save_batch("Sampled reconstruction", output, data, Tsave=rue)
 
             else:
                 z_mu, z_sigma, out_mu = autoencoder(first_train_batch)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
-                display_batch("Truth", first_train_batch, data, epoch==0)
-                display_batch("Mean-reconstruction", out_mu, data, True)
-                # display_batch("Sampled reconstruction", output, data, True)
+                display_and_save_batch("Truth", first_train_batch, data, save=(epoch==0))
+                display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
+                # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
     print('Saved model to /' + save_model(epochs, autoencoder, f'saved_model/{dataset}-{decoder_type}-e{epochs}-z{latent_dim}'))
 
