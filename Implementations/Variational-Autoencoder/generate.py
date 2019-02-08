@@ -8,12 +8,13 @@ from plot_utils import display_and_save_batch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def generate_uniformly(num=400, grid_size=0.1, PATH=None, model=None):
+def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=None):
     """
     Generates imgaes with 2D latent variables sampled uniformly with mean 0
     Currently supports Bernoulli decoders and Gaussian decoders without sigmas
 
     Args:
+        mode: 'uniform' or 'random'
         num: Number of samples to make. Accepts square numbers
         grid_size: Distance between adjacent latent variables
         PATH: The path to saved model (saved with torch.save(model, path))
@@ -24,6 +25,8 @@ def generate_uniformly(num=400, grid_size=0.1, PATH=None, model=None):
     """
 
     # Check arguments
+    if mode!='uniform' and mode!='random':
+        raise ValueError("Argument mode should either be 'uniform' or 'random'")
     if num!=(int(num**0.5))**2:
         raise ValueError('Argument num should be a square number')
     if PATH and model:
@@ -36,18 +39,21 @@ def generate_uniformly(num=400, grid_size=0.1, PATH=None, model=None):
         model = torch.load(PATH, map_location=device)
 
     # Sample tensor of latent variables
-    side = num**0.5
-    axis = (torch.arange(side) - side//2) * grid_size
-    x = axis.reshape(1, -1)
-    y = x.transpose(0, 1)
-    z = torch.stack(torch.broadcast_tensors(x, y), 2).reshape(-1, 2).to(device)
+    if mode == 'uniform':
+        side = num**0.5
+        axis = (torch.arange(side) - side//2) * grid_size
+        x = axis.reshape(1, -1)
+        y = x.transpose(0, 1)
+        z = torch.stack(torch.broadcast_tensors(x, y), 2).reshape(-1, 2).to(device)
+    elif mode == 'random':
+        z = torch.randn((num, 2))
 
     # Generate output from decoder
     with torch.no_grad():
         output, = model.decoder(z)
         if PATH is None:
             PATH = f'{model.dataset}-{model.decoder_type}-z{model.latent_dim}'
-        display_and_save_batch('Uniform-generation', output, f'-{model.dataset}-{num}')
+        display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}')
     
 if __name__=="__main__":
-    generate_uniformly(PATH=sys.argv[1])
+    generate_imgaes(mode=sys.argv[1], PATH=sys.argv[2])
