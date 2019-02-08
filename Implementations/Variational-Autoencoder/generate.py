@@ -8,7 +8,7 @@ from plot_utils import display_and_save_batch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def generate_uniformly(num=64, grid_size=0.1, PATH=None, model=None):
+def generate_uniformly(num=81, grid_size=0.1, PATH=None, model=None):
     """
     Generates imgaes with 2D latent variables sampled uniformly with mean 0
     Currently supports Bernoulli decoders and Gaussian decoders without sigmas
@@ -33,7 +33,7 @@ def generate_uniformly(num=64, grid_size=0.1, PATH=None, model=None):
     
     # Load model and send to device
     if PATH:
-        model = torch.load(model)
+        model = torch.load(PATH)
     model = model.to(device)
 
     # Sample tensor of latent variables
