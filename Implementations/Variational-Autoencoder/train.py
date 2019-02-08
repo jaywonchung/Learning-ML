@@ -145,7 +145,7 @@ def main(**kwargs):
         scheduler.step(sum(loss_hist)/len(loss_hist))
 
         # Save model every 20 epochs
-        if epoch != 0 and epoch%20 == 0 and epoch!=epochs-1:
+        if (epoch+1)%20 == 0 and epoch+1!=epochs:
             PATH = f'saved_model/{dataset}-{decoder_type}-e{epoch+1}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
             torch.save(autoencoder, PATH)
             print('\vTemporarily saved model to ' + PATH)
