@@ -56,4 +56,4 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
         display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}')
     
 if __name__=="__main__":
-    generate_imgaes(mode=sys.argv[1], PATH=sys.argv[2])
+    generate_images(mode=sys.argv[1], PATH=sys.argv[2])
