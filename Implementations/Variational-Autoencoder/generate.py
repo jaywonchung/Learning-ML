@@ -48,7 +48,7 @@ def generate_uniformly(num=400, grid_size=0.1, PATH=None, model=None):
         output, = model.decoder(z)
         if PATH is None:
             PATH = f'{model.dataset}-{model.decoder_type}-z{model.latent_dim}'
-        display_and_save_batch('Uniform generation', output, '-')
+        display_and_save_batch('Uniform-generation', output, f'-{model.dataset}-{num}')
     
 if __name__=="__main__":
     generate_uniformly(PATH=sys.argv[1])
