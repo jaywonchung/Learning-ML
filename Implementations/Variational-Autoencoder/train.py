@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 
-from model import VAE, save_model
+from model import VAE
 from plot_utils import display_and_save_batch
 from arguments import get_args, defaults
 
