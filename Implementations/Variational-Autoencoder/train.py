@@ -35,7 +35,7 @@ def main(**kwargs):
         resume_path: The path of saved model with which to resume training
 
     Notes:
-        - Saves model to 'saved_model/' every 20 epochs and when done
+        - Saves model to folder 'saved_model/' every 20 epochs and when done
         - Capable of training from scratch and resuming (provide saved model location to argument resume_path)
         - Schedules learning rate with optim.lr_scheduler.ReduceLROnPlateau
             : Decays learning rate by 1/10 when mean loss of all training data does not decrease for 10 epochs
@@ -76,7 +76,7 @@ def main(**kwargs):
     
     # Instantiate/Load model and optimizer
     if resume_path:
-        autoencoder = torch.load(resume_path).to(device)
+        autoencoder = torch.load(resume_path, map_location=device)
         optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
         print('Loaded saved model at ' + resume_path)
     else:

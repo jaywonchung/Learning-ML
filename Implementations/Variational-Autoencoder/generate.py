@@ -31,10 +31,9 @@ def generate_uniformly(num=400, grid_size=0.1, PATH=None, model=None):
     elif PATH is None and model is None:
         raise ValueError('You passed neither PATH nor model')
     
-    # Load model and send to device
+    # Load model
     if PATH:
-        model = torch.load(PATH, map_location='cpu')
-    model = model.to(device)
+        model = torch.load(PATH, map_location=device)
 
     # Sample tensor of latent variables
     side = num**0.5
