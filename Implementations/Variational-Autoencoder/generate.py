@@ -46,7 +46,7 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
         y = x.transpose(0, 1)
         z = torch.stack(torch.broadcast_tensors(x, y), 2).reshape(-1, 2).to(device)
     elif mode == 'random':
-        z = torch.randn((num, 2))
+        z = torch.randn((num, 2)).to(device)
 
     # Generate output from decoder
     with torch.no_grad():
