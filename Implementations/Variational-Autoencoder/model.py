@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
+
 
 class GaussianEncoder(nn.Module):
     """Gaussian encoder module for VAE"""
@@ -283,6 +283,6 @@ class VAE(nn.Module):
             Else, returns only mu
         """
         z_mu, z_sigma = self.encoder(x)
-        z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)
+        z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
         param = self.decoder(z)
         return (z_mu, z_sigma) + param
