@@ -167,7 +167,7 @@ def main(**kwargs):
 
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
-                # display_and_save_batch("Sampled reconstruction", output, data, Tsave=rue)
+                # display_and_save_batch("Sampled reconstruction", output, data, save=True)
 
             else:
                 z_mu, z_sigma, out_mu = autoencoder(first_test_batch)
