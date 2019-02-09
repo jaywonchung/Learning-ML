@@ -8,7 +8,7 @@ from plot_utils import display_and_save_batch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def generate_images(mode='uniform', dataset='MNIST', num=400, grid_size=0.05, PATH=None, model=None):
+def generate_images(mode='uniform', dataset='MNIST', dim=0, num=400, grid_size=0.05, PATH=None, model=None):
     """
     Generates imgaes with 2D latent variables sampled uniformly with mean 0
     Currently supports Bernoulli decoders and Gaussian decoders without sigmas
@@ -16,6 +16,7 @@ def generate_images(mode='uniform', dataset='MNIST', num=400, grid_size=0.05, PA
     Args:
         mode: 'uniform' or 'random'
         dataset:' MNIST' or 'CIFAR10', in accordance with the model
+        dim: we change dim and dim+1 dimensions of the latent variable (CIFAR10 only)
         num: Number of samples to make. Accepts square numbers
         grid_size: Distance between adjacent latent variables
         PATH: The path to saved model (saved with torch.save(model, path))
@@ -54,7 +55,7 @@ def generate_images(mode='uniform', dataset='MNIST', num=400, grid_size=0.05, PA
     # Pad latent vector with random normal numbers for CIFAR10
     if dataset == 'CIFAR10':
         z = torch.randn(model.latent_dim, device=device).repeat(num, 1)
-        z[:, 6:8] = _z
+        z[:, dim:dim+2] = _z
     else:
         z = _z
 
