@@ -4,7 +4,7 @@
 This is the pytorch implementation of:
 - Variational Autoencoder (VAE)
 
-which was introduced in [Auto-encoding Variational Bayes](https://arxiv.org/abs/1312.6114) by Kingma et al.
+which was introduced in [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114) by Kingma et al.
 
 # Tutorial
 
