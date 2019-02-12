@@ -66,10 +66,10 @@ def get_args():
     parser.add_argument("-p", "--print_every",
         type=int, default=defaults['print_every'], help="How often to print loss progress")
 
-    parser.add_argument("-r", "--resume_path",
+    parser.add_argument("-rp", "--resume_path",
         type=str, default=defaults['resume_path'], help="If we wish to resume training, provide the saved model path here")
     
-    parser.add_argument("-r", "--resume_epoch",
+    parser.add_argument("-re", "--resume_epoch",
         type=int, default=defaults['resume_epoch'], help="In case of resuming, the number of epochs already done")
     
     return check_args(parser.parse_args())
