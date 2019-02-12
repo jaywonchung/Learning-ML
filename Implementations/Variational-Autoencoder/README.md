@@ -112,19 +112,65 @@ With **Bernoulli decoder** and **10-D** latent variable:
 </tr>
 </table>
 
-- Row 2 are images generated directly from model output ```p```, while row 3 are sampled pixel-by-pixel from a Bernoulli distribution parametrized by ```p```.  
+- Row 2 are images generated directly from model output ```p```, while row 3 are sampled pixel-by-pixel from a Bernoulli distribution parametrized by ```p```.   
+- You can see that the sampled images are not of high quality. This was even worse for CIFAR10, so I did not generate sampled images for the CIFAR10 dataset.
 
 ## MNIST Generation
 
+With **2-D uniformly sampled** latent variables:
 
+<img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-MNIST-400.png' height = '450px'>
+
+With **2-D randomly sampled** latent variables:
+
+<img src = '/Implementations/Variational-Autoencoder/results/random-generation-MNIST-400.png' height = '450px'>
 
 ## CIFAR10 Reconstruction
 
+With **Gaussian decoder** and **30-D** latent variable:
 
-
-- You can see that the sampled images are not of high quality. This was even worse for CIFAR10, so I did not generate sampled images for the CIFAR10 dataset.
+<table align='center'>
+<tr align='center'>
+    <td> Input image </td>
+    <td> Epoch 1 </td>
+    <td> Epoch 10 </td>
+    <td> Epoch 50 </td>
+</tr>
+<tr align='center'>
+    <td><img src = '/Implementations/Variational-Autoencoder/results/Truth-Gaussian-z30.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e001.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e010.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e050.png' height = '200px'> </td>
+</tr>
+<tr align='center'>
+	<td> Epoch 100 </td>
+    <td> Epoch 300  </td>
+    <td> Epoch 600 </td>
+    <td> Epoch 1000 </td>
+</tr>
+<tr align='center'>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e100.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e300.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e600.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e1000.png' height = '200px'> </td>
+</tr>
+</table>
 
 ## CIFAR10 Generation
+
+With **30-D** latent variables **uniformly** varied on two specific dimensions:
+
+<table align='center'>
+<tr align='center'>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-1.png' height = '300px'> </td>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-2.png' height = '300px'> </td>
+	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-3.png' height = '300px'> </td>
+</tr>
+</table>
+
+With **30-D** latent variables **randomly** varied on two specific dimensions:
+
+<img src = '/Implementations/Variational-Autoencoder/results/random-generation-CIFAR10-400.png' height = '300px'>
 
 # Usage
 ## Prerequisites
@@ -136,7 +182,7 @@ With **Bernoulli decoder** and **10-D** latent variable:
 
 Command line:
 ```bash
-python train.py -n True -b True -e 10 -ls 'CE' -lr 3e-4 -z 10 -p 1
+python train.py -d 'MNIST' -t 'Bernoulli' -s False -e 10 -b 64 -lr 3e-4 -z 10 -p 1 -rp 'saved_model/path' -re 20
 ```
 
 Jupyter notebook:
@@ -144,18 +190,20 @@ Jupyter notebook:
 from train import main
 %matplotlib inline
 
-main(add_noise=True, binarize_input=True, epochs=10, loss='CE', learning_rate=3e-4, latent_dim=10, print_every=1)
+main(dataset='MNIST', decoder_type='Bernoulli', model_sigma=False, epochs=10, batch_size=64, learning_rate=3e-4, latent_dim=10, print_every=1, resume_path='saved_model/path', resume_epoch=20)
 ```
 
 ## Arguments
 Every argument is optional, and has a default value defined at ```arguments.py```.
 
-- ```--add_noise, -n```: Whether to add dropout noise to input images. *Default*: - ```True```  
-- ```--binarize_input, -b```: Whether to binarize input images (threshold 0.5). *Default*: ```True```
+- ```--dataset, -d```: 'MNIST' or 'CIFAR10'. *Default*: - ```'MNIST'```  
+- ```--decoder_type, -t```: 'Bernoulli' or 'Gaussian'. *Default*: ```'Bernoulli'```
+- ```--model_sigma, -s```: In case of Gaussian decoder, whether to model the standard deviation. *Default*: ```False```
 - ```--epochs, -e```: Number of epochs to train. *Default*: ```10```
-- ```--loss, -ls```: Which loss function to use. Should be either ```'CE'``` or ```'MSE'```. *Default*: ```'CE'```
-- ```--learning_rate, -lr```: Learning rate. This value is decayed to ```lr/10``` at epoch 6. *Default*: ```3e-4```
+- ```--batch_size, -b```: Size of batch size at training/testing. *Default*: ```64```
+- ```--learning_rate, -lr```: Learning rate. *Default*: ```3e-4```
 - ```--latent_dim, -z```: Dimension of the latent variable. *Default*: ```10```
 - ```--print_every, -p```: How often to print training progress. *Default*: ```1```
+- ```--resume_path, -rp```: In case you want to resume training from a saved model, provide its path here.
+- ```--resume_epoch, -re```: Number of epochs already trained for the saved model. *Default*: ```0```
 
-Binarizing the input means that you model the output as a multinoulli distribution. Then using the cross-entropy loss is desirable in the Maximum Likelihood Estimation perspective. On the other hand if you do not binarize the input images, you would be modelling the output as a Multivariate Gaussian distribution. Then using the mean square error is desirable.
