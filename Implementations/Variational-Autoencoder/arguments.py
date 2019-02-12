@@ -40,7 +40,7 @@ def check_args(args):
 def get_args():
     """Parse arguments from commandline."""
     parser = argparse.ArgumentParser(
-        description="Pytorch Implementation of Denoising Autoencoder(DAE)")
+        description="Pytorch Implementation of Variational Autoencoder (VAE)")
     
     parser.add_argument("-d", "--dataset",
         type=str, default=defaults['dataset'], help="'MNIST' or 'CIFAR10'")
