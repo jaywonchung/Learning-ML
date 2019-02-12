@@ -16,27 +16,27 @@ Refer to my blog post:
 
 <table align='center'>
 <tr align='center'>
-	<td style="font-weight: bold"> Encoder </td>
+	<td> <strong>Encoder</strong> </td>
 	<td colspan=3>  Gaussian </td>
 </tr>
 <tr align='center'>
-	<td style="font-weight: bold"> Decoder </td>
+	<td> <strong>Decoder</strong> </td>
 	<td colspan=2> Gaussian </td>
 	<td> Bernoulli </td>
 </tr>
 <tr align='center'>
-	<td style="font-weight: bold"> Model output </td>
+	<td> <strong>Model output</strong> </td>
 	<td> Mean, Std</td>
 	<td> Mean</td>
 	<td> Probability </td>
 </tr>
 <tr align='center'>
-	<td style="font-weight: bold"> Supported dataset </td>
+	<td> <strong>Supported dataset</strong> </td>
 	<td colspan=2> MNIST, CIFAR10</td>
 	<td> MNIST</td>
 </tr>
 <tr align='center'>
-	<td style="font-weight: bold"> Input image</td>
+	<td> <strong>Input image</strong> </td>
 	<td colspan=2> As is </td>
 	<td>  Binarized</td>
 </tr>
