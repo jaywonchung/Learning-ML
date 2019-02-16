@@ -32,8 +32,6 @@ def check_args(args):
     assert args.latent_dim >= 1, "Latent dimension must be a positive integer"
     
     assert args.print_every >= 1, "Print_every must be a positive integer"
-
-    assert args.resume_epoch >= 1, "Resume_epoch must be a positive integer"
     
     return args
 
