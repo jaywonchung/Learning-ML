@@ -158,7 +158,7 @@ class GaussianDecoder(nn.Module):
 
         if dataset == 'MNIST':
             # z: (N, latent_dim)
-            self.fc1 = nn.Linear(in_features=latent_dim, out_features=1024)
+            self.fc1 = nn.Linear(in_features=latent_dim+10, out_features=1024)
             self.bn1 = nn.BatchNorm1d(num_features=1024)
             # z: (N, 1024)
             self.fc2 = nn.Linear(in_features=1024, out_features=128*7*7)
@@ -176,7 +176,7 @@ class GaussianDecoder(nn.Module):
 
         elif dataset == 'CIFAR10':
             # z: (N, latent_dim)
-            self.fc1 = nn.Linear(in_features=latent_dim, out_features=448*2*2)
+            self.fc1 = nn.Linear(in_features=latent_dim+10, out_features=448*2*2)
             self.bn1 = nn.BatchNorm1d(num_features=448*2*2)
             # z: (N, 448*2*2)
             self.deconv2 = nn.ConvTranspose2d(in_channels=448, out_channels=256, kernel_size=4, stride=2, padding=1)
