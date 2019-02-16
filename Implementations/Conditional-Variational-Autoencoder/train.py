@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 
-from model import VAE
+from model import CVAE
 from plot_utils import display_and_save_batch
 from arguments import get_args, defaults
 
@@ -83,16 +83,16 @@ def main(**kwargs):
         print('Loaded saved model at ' + resume_path)
     else:
         if decoder_type == 'Bernoulli':
-            autoencoder = VAE(latent_dim, dataset, decoder_type).to(device)
+            autoencoder = CVAE(latent_dim, dataset, decoder_type).to(device)
         else:
-            autoencoder = VAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
+            autoencoder = CVAE(latent_dim, dataset, decoder_type, model_sigma).to(device)
         optimizer = optim.Adam(autoencoder.parameters(), lr=lr)
     
     # Instantiate learning rate scheduler
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', verbose=True)
     
     # Announce current mode
-    print(f'Start training VAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset from epoch {resume_epoch+1}')
+    print(f'Start training CVAE with Gaussian encoder and {decoder_type} decoder on {dataset} dataset from epoch {resume_epoch+1}')
 
     # Prepare batch to display with plt
     first_test_batch, first_test_batch_label = iter(test_loader).next()

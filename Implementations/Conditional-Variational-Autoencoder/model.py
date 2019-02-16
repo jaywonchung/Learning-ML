@@ -243,8 +243,8 @@ class GaussianDecoder(nn.Module):
 
 
 
-class VAE(nn.Module):
-    """Variational Autoencoder module that wraps one encoder and one decoder module."""
+class CVAE(nn.Module):
+    """Conditional Variational Autoencoder module that wraps one encoder and one decoder module."""
     
     def __init__(self, latent_dim, dataset, decoder_type, model_sigma=False):
         """
