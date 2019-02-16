@@ -285,7 +285,7 @@ class VAE(nn.Module):
         z_mu, z_sigma = self.encoder(x)
         z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
 
-        onehot_y = torch.zeros((x.shape[0], 10))
+        onehot_y = torch.zeros((x.shape[0], 10), device=device)
 
         y = y.view(x.shape[0], 1)
         y.requires_grad = False
