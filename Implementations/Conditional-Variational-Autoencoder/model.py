@@ -287,10 +287,9 @@ class CVAE(nn.Module):
 
         # Concatenate onehot label to latent vector
         y = y.view(x.shape[0], 1)
-        y.requires_grad = False
-        onehot_y = torch.zeros((x.shape[0], 10), device=device)
+        onehot_y = torch.zeros((x.shape[0], 10), device=device, requires_grad=False)
         onehot_y.scatter_(1, y, 1)
         z = torch.cat((z, onehot_y), dim=1)
-        
+
         param = self.decoder(z)
         return (z_mu, z_sigma) + param
