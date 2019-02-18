@@ -284,13 +284,13 @@ class CVAE(nn.Module):
             Else, returns (z_mu, z_sigma, mu)
         """
         z_mu, z_sigma = self.encoder(x)
-        z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
+        self.z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
 
         # Concatenate onehot label to latent vector
         y = y.view(x.shape[0], 1)
         onehot_y = torch.zeros((x.shape[0], 10), device=device, requires_grad=False)
         onehot_y.scatter_(1, y, 1)
-        self.z = torch.cat((z, onehot_y), dim=1)
+        latent = torch.cat((self.z, onehot_y), dim=1)
 
-        param = self.decoder(self.z)
+        param = self.decoder(latent)
         return (z_mu, z_sigma) + param

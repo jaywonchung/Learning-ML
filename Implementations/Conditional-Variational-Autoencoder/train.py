@@ -140,6 +140,8 @@ def main(**kwargs):
                                 100. * batch_ind / len(train_loader))
                 print(train_log, end='\r')
                 sys.stdout.flush()
+        
+        display_and_save_batch('latent-variable', autoencoder.z, )
 
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
