@@ -157,6 +157,7 @@ def main(**kwargs):
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}'
         with torch.no_grad():
+            autoencoder.eval()
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_test_batch, first_test_batch_label)
                 output = torch.bernoulli(p)
@@ -180,6 +181,7 @@ def main(**kwargs):
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
+            autoencoder.train()
 
     # Save final model
     PATH = f'saved_model/{dataset}-{decoder_type}-e{epochs+resume_epoch}-z{latent_dim}' + datetime.datetime.now().strftime("-%b-%d-%H-%M-%p")
