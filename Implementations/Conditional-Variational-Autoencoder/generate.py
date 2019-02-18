@@ -50,10 +50,11 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
 
     # Generate output from decoder
     with torch.no_grad():
-        for i in range(10):
+        for i in range(1):
             label = torch.zeros((num, 10), device=device)
             label[:, i] = 1
             latent = torch.cat((z, label), dim=1)
+            print(latent)
             output, = model.decoder(latent)
             display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}-{i+1}')
     
