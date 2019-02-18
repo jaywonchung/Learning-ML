@@ -16,7 +16,7 @@ def display_and_save_batch(title, batch, data, save=True, display=True):
 def display_and_save_latent(batch, label, data, save=True, display=True):
     """Display and save batch of 2-D latent variable using plt"""
     colors = ['black', 'red', 'green', 'blue', 'yellow', 'cyan', 'magenta', 'pink', 'violet', 'grey']
-    z = batch.cpu().numpy()
+    z = batch.cpu().detach().numpy()
     l = label.cpu().numpy()
 
     plt.title('Latent variables')
