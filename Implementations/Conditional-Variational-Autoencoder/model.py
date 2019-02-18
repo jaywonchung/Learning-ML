@@ -21,7 +21,7 @@ class GaussianEncoder(nn.Module):
         self.dataset = dataset
 
         if dataset == 'MNIST':
-            # x: (N, 1, 28, 38)
+            # x: (N, 1, 28, 28+10)
             self.conv1 = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=4, stride=2, padding=1)
             # x: (N, 64, 14, 19)
             self.conv2 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=4, stride=2, padding=1)
@@ -34,16 +34,16 @@ class GaussianEncoder(nn.Module):
             # x: (N, 2*latent_dim)
 
         elif dataset == 'CIFAR10':
-            # x: (N, 3, 32, 32)
+            # x: (N, 3, 32, 32+10)
             self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=4, stride=2, padding=1)
-            # x: (N, 64, 16, 16)
+            # x: (N, 64, 16, 21)
             self.conv2 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=4, stride=2, padding=1)
             self.bn2 = nn.BatchNorm2d(num_features=128)
-            # x: (N, 128, 8, 8)
+            # x: (N, 128, 8, 10)
             self.conv3 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=4, stride=2, padding=1)
             self.bn3 = nn.BatchNorm2d(num_features=256)
-            # x: (N, 256, 4, 4)
-            self.fc4 = nn.Linear(in_features=256*4*4, out_features=2*latent_dim)
+            # x: (N, 256, 4, 5)
+            self.fc4 = nn.Linear(in_features=256*4*5, out_features=2*latent_dim)
             # x: (N, 2*latent_dim)
 
         for m in self.modules():
@@ -56,7 +56,7 @@ class GaussianEncoder(nn.Module):
         Forward method for the GaussianEncoder class
 
         Parameter:
-            x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
+            x: Batch of (images + onehot labels). For MNIST, (N, 1, 28, 38). For CIFAR10, (N, 3, 32, 42).
 
         Return:
             mu: Vector of size latent_dim.
@@ -75,7 +75,7 @@ class GaussianEncoder(nn.Module):
             x = F.leaky_relu(self.conv1(x), negative_slope=0.2)
             x = F.leaky_relu(self.bn2(self.conv2(x)), negative_slope=0.2)
             x = F.leaky_relu(self.bn3(self.conv3(x)), negative_slope=0.2)
-            x = x.view(-1, 256*4*4)
+            x = x.view(-1, 256*4*5)
             x = self.fc4(x)
 
         # split x in half
@@ -99,7 +99,7 @@ class BernoulliDecoder(nn.Module):
         """
         super().__init__()
 
-        # z: (N, latent_dim)
+        # z: (N, latent_dim+10)
         self.fc1 = nn.Linear(in_features=latent_dim+10, out_features=1024)
         self.bn1 = nn.BatchNorm1d(num_features=1024)
         # z: (N, 1024)
@@ -122,7 +122,7 @@ class BernoulliDecoder(nn.Module):
         Forward method for the BernoulliDecoder class
 
         Parameter:
-            z: Batch of latent variables.
+            z: Batch of (latent variables + onehot labels)
 
         Return:
             mu: Vector of size latent_dim.
@@ -157,7 +157,7 @@ class GaussianDecoder(nn.Module):
         self.model_sigma = model_sigma
 
         if dataset == 'MNIST':
-            # z: (N, latent_dim)
+            # z: (N, latent_dim+10)
             self.fc1 = nn.Linear(in_features=latent_dim+10, out_features=1024)
             self.bn1 = nn.BatchNorm1d(num_features=1024)
             # z: (N, 1024)
@@ -175,7 +175,7 @@ class GaussianDecoder(nn.Module):
                 # z: (N, 1, 28, 28)
 
         elif dataset == 'CIFAR10':
-            # z: (N, latent_dim)
+            # z: (N, latent_dim+10)
             self.fc1 = nn.Linear(in_features=latent_dim+10, out_features=448*2*2)
             self.bn1 = nn.BatchNorm1d(num_features=448*2*2)
             # z: (N, 448*2*2)

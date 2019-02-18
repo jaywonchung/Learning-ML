@@ -21,7 +21,8 @@ def main(**kwargs):
     1. Retrieve arguments from kwargs
     2. Prepare data
     3. Train
-    4. Display/save first batch of training set (truth and reconstructed) after every epoch
+    4. Display and save first batch of training set (truth and reconstructed) after every epoch
+    5. If latent dimension is 2, display and save latent variable of first batch of training set after every epoch
     
     Args:
         dataset: Which dataset to use
