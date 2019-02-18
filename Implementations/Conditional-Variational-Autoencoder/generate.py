@@ -61,10 +61,12 @@ def generate_images(mode='uniform', dataset='MNIST', dim=0, num=400, grid_size=0
 
     # Generate output from decoder
     with torch.no_grad():
-        output, = model.decoder(z)
-        if PATH is None:
-            PATH = f'{model.dataset}-{model.decoder_type}-z{model.latent_dim}'
-        display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}')
+        for i in range(10):
+            label = torch.zeros(num, 10)
+            label[:, i] = 1
+            torch.cat((z, label), dim=1)
+            output, = model.decoder(z)
+            display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}-{i}')
     
 if __name__=="__main__":
     # commandline input
