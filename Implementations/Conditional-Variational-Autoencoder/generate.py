@@ -53,10 +53,10 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
         for i in range(10):
             label = torch.zeros(num, 10)
             label[:, i] = 1
-            torch.cat((z, label), dim=1)
-            output, = model.decoder(z)
-            display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}-{i}')
+            latent = torch.cat((z, label), dim=1)
+            output, = model.decoder(latent)
+            display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}-{i+1}')
     
 if __name__=="__main__":
-    # commandline input
+    # Commandline input
     generate_images(mode=sys.argv[1], PATH=sys.argv[2])
