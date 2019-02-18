@@ -141,10 +141,6 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
 
-            with torch.no_grad():
-                if batch_ind == 0:
-                    display_and_save_latent(autoencoder.z, input_label, f'-{epoch}')
-
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
 
@@ -162,6 +158,9 @@ def main(**kwargs):
                 z_mu, z_sigma, p = autoencoder(first_test_batch, first_test_batch_label)
                 output = torch.bernoulli(p)
 
+                if latent_dim == 2:
+                    display_and_save_latent(autoencoder.z, input_label, data)
+
                 display_and_save_batch("Binarized-truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", p, data, save=True)
                 display_and_save_batch("Sampled-reconstruction", output, data, save=True)
@@ -170,6 +169,9 @@ def main(**kwargs):
                 z_mu, z_sigma, out_mu, out_sigma = autoencoder(first_test_batch, first_test_batch_label)
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
+                if latent_dim == 2:
+                    display_and_save_latent(autoencoder.z, input_label, data)
+
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
                 # display_and_save_batch("Sampled reconstruction", output, data, save=True)
@@ -177,6 +179,9 @@ def main(**kwargs):
             else:
                 z_mu, z_sigma, out_mu = autoencoder(first_test_batch, first_test_batch_label)
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
+
+                if latent_dim == 2:
+                    display_and_save_latent(autoencoder.z, input_label, data)
 
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
