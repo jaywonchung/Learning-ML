@@ -159,7 +159,7 @@ def main(**kwargs):
                 output = torch.bernoulli(p)
 
                 if latent_dim == 2:
-                    display_and_save_latent(autoencoder.z, input_label, data)
+                    display_and_save_latent(autoencoder.z, first_test_batch_label, data)
 
                 display_and_save_batch("Binarized-truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", p, data, save=True)
@@ -170,7 +170,7 @@ def main(**kwargs):
                 output = torch.normal(out_mu, out_sigma).clamp(0., 1.)
 
                 if latent_dim == 2:
-                    display_and_save_latent(autoencoder.z, input_label, data)
+                    display_and_save_latent(autoencoder.z, first_test_batch_label, data)
 
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
@@ -181,7 +181,7 @@ def main(**kwargs):
                 output = torch.normal(out_mu, torch.ones_like(out_mu)).clamp(0., 1.)
 
                 if latent_dim == 2:
-                    display_and_save_latent(autoencoder.z, input_label, data)
+                    display_and_save_latent(autoencoder.z, first_test_batch_label, data)
 
                 display_and_save_batch("Truth", first_test_batch, data, save=(epoch==0))
                 display_and_save_batch("Mean-reconstruction", out_mu, data, save=True)
