@@ -21,13 +21,13 @@ class GaussianEncoder(nn.Module):
         self.dataset = dataset
 
         if dataset == 'MNIST':
-            # x: (N, 1, 28, 28)
+            # x: (N, 1, 28, 38)
             self.conv1 = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=4, stride=2, padding=1)
-            # x: (N, 64, 14, 14)
+            # x: (N, 64, 14, 19)
             self.conv2 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=4, stride=2, padding=1)
             self.bn2 = nn.BatchNorm2d(num_features=128)
-            # x: (N, 128, 7, 7)
-            self.fc3 = nn.Linear(in_features=128*7*7, out_features=1024)
+            # x: (N, 128, 7, 9)
+            self.fc3 = nn.Linear(in_features=128*7*9, out_features=1024)
             self.bn3 = nn.BatchNorm1d(num_features=1024)
             # x: (N, 1024)
             self.fc4 = nn.Linear(in_features=1024, out_features=2*latent_dim)
@@ -283,14 +283,17 @@ class CVAE(nn.Module):
             If model_sigma is True, returns (z_mu, z_sigma, mu, sigma)
             Else, returns (z_mu, z_sigma, mu)
         """
-        z_mu, z_sigma = self.encoder(x)
-        self.z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
-
-        # Concatenate onehot label to latent vector
+        # Create one-hot vector from labels
         y = y.view(x.shape[0], 1)
         onehot_y = torch.zeros((x.shape[0], 10), device=device, requires_grad=False)
         onehot_y.scatter_(1, y, 1)
-        latent = torch.cat((self.z, onehot_y), dim=1)
 
+        # Encode
+        input_batch = torch.cat((x, onehot_y.view(x.shape[0], 1, 1, 10)*torch.ones(x.shape[0], x.shape[1], x.shape[2], 10)), dim=1)
+        z_mu, z_sigma = self.encoder(input_batch)
+        self.z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
+
+        # Decode
+        latent = torch.cat((self.z, onehot_y), dim=1)
         param = self.decoder(latent)
         return (z_mu, z_sigma) + param
