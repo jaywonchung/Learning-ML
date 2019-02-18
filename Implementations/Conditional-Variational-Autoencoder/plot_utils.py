@@ -1,5 +1,6 @@
 import torchvision
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
 def display_and_save_batch(title, batch, data, save=True, display=True):
@@ -12,11 +13,14 @@ def display_and_save_batch(title, batch, data, save=True, display=True):
     if display:
         plt.show()
 
-def display_and_save_latent(batch, data, save=True, display=True):
+def display_and_save_latent(batch, label, data, save=True, display=True):
     """Display and save batch of 2-D latent variable using plt"""
-    plt.title('Latent variables')
+    colors = ['black', 'red', 'green', 'blue', 'yellow', 'cyan', 'magenta', 'pink', 'violet', 'grey']
     z = batch.cpu().numpy()
-    plt.plot(z[:,0], z[:,1], 'o', color='black')
+    l = label.cpu().numpy()
+
+    plt.title('Latent variables')
+    plt.scatter(z[:,0], z[:,1], c=l, cmap=matplotlib.colors.ListedColormap(colors))
     if save:
         plt.savefig('results/latent-variable-' + data + '.png', transparent=True, bbox_inches='tight')
     if display:
