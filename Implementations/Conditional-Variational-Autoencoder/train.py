@@ -10,7 +10,7 @@ import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 
 from model import CVAE
-from plot_utils import display_and_save_batch
+from plot_utils import *
 from arguments import get_args, defaults
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -141,7 +141,7 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
         
-        display_and_save_batch('latent-variable', autoencoder.z, )
+        display_and_save_latent(autoencoder.z, '-{epoch}')
 
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
