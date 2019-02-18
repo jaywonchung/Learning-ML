@@ -289,7 +289,8 @@ class CVAE(nn.Module):
         onehot_y.scatter_(1, y, 1)
 
         # Encode
-        input_batch = torch.cat((x, onehot_y.view(x.shape[0], 1, 1, 10)*torch.ones(x.shape[0], x.shape[1], x.shape[2], 10)), dim=3)
+        onehot_conv_y = onehot_y.view(x.shape[0], 1, 1, 10)*torch.ones((x.shape[0], x.shape[1], x.shape[2], 10), device=device)
+        input_batch = torch.cat((x, onehot_conv_y), dim=3)
         z_mu, z_sigma = self.encoder(input_batch)
         self.z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
 
