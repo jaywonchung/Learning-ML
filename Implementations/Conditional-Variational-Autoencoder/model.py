@@ -277,10 +277,11 @@ class CVAE(nn.Module):
 
         Parameter:
             x: Batch of images. For MNIST, (N, 1, 28, 28). For CIFAR10, (N, 3, 32, 32).
+            y: Label of batch.
 
         Return:
-            If model_sigma is True, returns (mu, sigma)
-            Else, returns only mu
+            If model_sigma is True, returns (z_mu, z_sigma, mu, sigma)
+            Else, returns (z_mu, z_sigma, mu)
         """
         z_mu, z_sigma = self.encoder(x)
         z = z_mu + z_sigma * torch.randn_like(z_mu, device=device)  # reparametrization trick
