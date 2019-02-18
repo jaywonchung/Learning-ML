@@ -67,7 +67,7 @@ class GaussianEncoder(nn.Module):
         if self.dataset == 'MNIST':
             x = F.leaky_relu(self.conv1(x), negative_slope=0.2)
             x = F.leaky_relu(self.bn2(self.conv2(x)), negative_slope=0.2)
-            x = x.view(-1, 128*7*7)
+            x = x.view(-1, 128*7*9)
             x = F.leaky_relu(self.bn3(self.fc3(x)), negative_slope=0.2)
             x = self.fc4(x)
 
