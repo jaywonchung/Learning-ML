@@ -13,7 +13,7 @@ def display_and_save_batch(title, batch, data, save=True, display=True):
         plt.show()
 
 def display_and_save_latent(batch, data, save=True, display=True):
-    """Display and save batch of 2-D latent variable"""
+    """Display and save batch of 2-D latent variable using plt"""
     plt.title('Latent variables')
     z = batch.cpu().numpy()
     plt.plot(z[:,0], z[:,1], 'o', color='black')
