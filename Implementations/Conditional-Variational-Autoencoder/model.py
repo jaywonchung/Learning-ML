@@ -290,7 +290,7 @@ class CVAE(nn.Module):
         y = y.view(x.shape[0], 1)
         onehot_y = torch.zeros((x.shape[0], 10), device=device, requires_grad=False)
         onehot_y.scatter_(1, y, 1)
-        z = torch.cat((z, onehot_y), dim=1)
+        self.z = torch.cat((z, onehot_y), dim=1)
 
-        param = self.decoder(z)
+        param = self.decoder(self.z)
         return (z_mu, z_sigma) + param
