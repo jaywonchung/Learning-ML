@@ -141,8 +141,9 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
 
-            if batch_ind == 0:
-                display_and_save_latent(autoencoder.z, input_label, '-{epoch}')
+            with torch.no_grad():
+                if batch_ind == 0:
+                    display_and_save_latent(autoencoder.z, input_label, '-{epoch}')
 
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
