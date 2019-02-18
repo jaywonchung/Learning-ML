@@ -37,6 +37,7 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
     # Load model
     if PATH:
         model = torch.load(PATH, map_location=device)
+    model.eval()
 
     # Sample tensor of latent variables
     if mode == 'uniform':
@@ -54,7 +55,6 @@ def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=No
             label = torch.zeros((num, 10), device=device)
             label[:, i] = 1
             latent = torch.cat((z, label), dim=1)
-            #print(latent)
             output, = model.decoder(latent)
             display_and_save_batch(f'{mode}-generation', output, f'-{model.dataset}-{num}-{i+1}')
     
