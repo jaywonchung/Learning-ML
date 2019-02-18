@@ -143,7 +143,7 @@ def main(**kwargs):
 
             with torch.no_grad():
                 if batch_ind == 0:
-                    display_and_save_latent(autoencoder.z, input_label, '-{epoch}')
+                    display_and_save_latent(autoencoder.z, input_label, f'-{epoch}')
 
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
