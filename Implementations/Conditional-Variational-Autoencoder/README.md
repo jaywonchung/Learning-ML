@@ -39,13 +39,13 @@ which was introduced in [Leaning Structured Output Representation Using Deep Con
 
 ## Network Structure
 
-Refer to [```model.py```](/Implementations/Variational-Autoencoder/model.py). At ```__init__```, I annotated the shape change of the input every layer.
+Refer to [```model.py```](/Implementations/Conditional-Variational-Autoencoder/model.py). At ```__init__```, I annotated the shape change of the input every layer.
 
 # Results
 ## MNIST Reconstruction
 
 Training specs:
-- Initial learning rate ```1e-4``` with ```torch.optim.Adam``` optimizer
+- Initial learning rate ```3e-4``` with ```torch.optim.Adam``` optimizer
 - Learning rate scheduled with ```torch.optim.lr_scheduler.ReduceLROnPlateau``` by mean training loss
 - Batch size ```64```
 
