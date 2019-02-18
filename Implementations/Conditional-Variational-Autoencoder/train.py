@@ -141,7 +141,6 @@ def main(**kwargs):
                 print(train_log, end='\r')
                 sys.stdout.flush()
         
-        display_and_save_latent(autoencoder.z, '-{epoch}')
 
         # Learning rate decay
         scheduler.step(sum(loss_hist)/len(loss_hist))
@@ -155,6 +154,9 @@ def main(**kwargs):
         # Display training result with test set
         data = f'-{decoder_type}-z{latent_dim}-e{epoch+1:03d}'
         with torch.no_grad():
+
+            display_and_save_latent(autoencoder.z, '-{epoch}')
+
             if decoder_type == 'Bernoulli':
                 z_mu, z_sigma, p = autoencoder(first_test_batch, first_test_batch_label)
                 output = torch.bernoulli(p)
