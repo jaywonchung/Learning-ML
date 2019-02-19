@@ -10,8 +10,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def generate_images(mode='uniform', num=400, grid_size=0.05, PATH=None, model=None):
     """
-    Generates imgaes with 2D latent variables sampled uniformly with mean 0
-    Currently supports Bernoulli decoders and Gaussian decoders without sigmas
+    Generates MNIST imgaes with 2D latent variables sampled uniformly with mean 0
 
     Args:
         mode: 'uniform' or 'random'
