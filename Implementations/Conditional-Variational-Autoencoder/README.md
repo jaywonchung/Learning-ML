@@ -90,7 +90,7 @@ By 'mean reconstruction' I mean that the images were created by directly interpr
 
 The change of 2-D latent variables during 50 epochs:
 
-<img src = 'Implementation/Conditional-Variational-Autoencoder/results/latent-variable.gif' height = '350px'>
+<img src = '/Implementation/Conditional-Variational-Autoencoder/results/latent-variable.gif' height = '350px'>
 
 ## MNIST Generation
 
