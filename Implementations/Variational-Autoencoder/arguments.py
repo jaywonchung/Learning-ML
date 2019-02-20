@@ -23,15 +23,17 @@ def check_args(args):
 
     assert args.model_sigma==True or args.model_sigma==False, "Model sigma must be either True or False"
     
-    assert args.epochs >= 1, "Number of epochs must be a positive integer"
+    assert isinstance(args.epochs, int) and args.epochs >= 1, "Number of epochs must be a positive integer"
 
-    assert args.batch_size >= 1, "Size of batch must be a positive integer"
+    assert isinstance(args.batch_size, int) and args.batch_size >= 1, "Size of batch must be a positive integer"
     
     assert args.learning_rate > 0, "Learning rate must be positive"
     
-    assert args.latent_dim >= 1, "Latent dimension must be a positive integer"
+    assert isinstance(args.latent_dim, int) and args.latent_dim >= 1, "Latent dimension must be a positive integer"
     
-    assert args.print_every >= 1, "Print_every must be a positive integer"
+    assert isinstance(args.print_every, int) and args.print_every >= 1, "Print_every must be a positive integer"
+    
+    assert isinstance(args.resume_epoch, int) and args.resume_epoch >= 0, "Resume_epoch must be a non-negative integer"
     
     return args
 
