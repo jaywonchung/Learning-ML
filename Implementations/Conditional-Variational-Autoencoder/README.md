@@ -73,12 +73,6 @@ With **Bernoulli decoder** and **2-D** latent variable:
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e002.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e005.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
-</tr>
-<tr align='center'>
 	<td> Epoch 20 </td>
     <td> Epoch 30  </td>
     <td> Epoch 40 </td>
@@ -89,12 +83,6 @@ With **Bernoulli decoder** and **2-D** latent variable:
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e040.png' height = '200px'>
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
-</tr>
-<tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e020.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e040.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
 </tr>
 </table>
 
