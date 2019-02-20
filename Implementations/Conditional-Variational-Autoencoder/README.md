@@ -88,6 +88,10 @@ With **Bernoulli decoder** and **2-D** latent variable:
 
 By 'mean reconstruction' I mean that the images were created by directly interpreting the output Bernoulli distribution parameter ```p``` as the pixel intensity. I also sampled images from the multivariate Bernoulli distribution, but the results weren't that pretty. Check them out at the ```/results``` folder.
 
+The change of 2-D latent variables during 50 epochs:
+
+<img src = 'Implementation/Conditional-Variational-Autoencoder/results/latent-variable.gif' height = '350px'>
+
 ## MNIST Generation
 
 With **2-D uniformly sampled** latent variables:
@@ -147,45 +151,31 @@ With **Gaussian decoder** and **30-D** latent variable:
 <table align='center'>
 <tr align='center'>
     <td> Input image </td>
+</tr>
+<tr align='center'>
+    <td> <img src = "/Implementations/Conditional-Variational-Autoencoder/results/Truth-Gaussian.png" height = '200px'> </td>
+</tr>
+<tr align='center'>
     <td> Epoch 1 </td>
-    <td> Epoch 10 </td>
-    <td> Epoch 50 </td>
+    <td> Epoch 5 </td>
+    <td> Epoch 25 </td>
 </tr>
 <tr align='center'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Truth-Gaussian-z30.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e001.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e010.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e050.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e001.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e005.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e025.png' height = '200px'> </td>
 </tr>
 <tr align='center'>
-	<td> Epoch 100 </td>
-    <td> Epoch 300  </td>
-    <td> Epoch 600 </td>
-    <td> Epoch 1000 </td>
+	<td> Epoch 50 </td>
+    <td> Epoch 75  </td>
+    <td> Epoch 100 </td>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e100.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e300.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e600.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e1000.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e050.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e075.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z50-e100.png' height = '200px'> </td>
 </tr>
 </table>
-
-## CIFAR10 Generation
-
-With **30-D** latent variables **uniformly** varied on two specific dimensions:
-
-<table align='center'>
-<tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-1.png' height = '300px'> </td>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-2.png' height = '300px'> </td>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-3.png' height = '300px'> </td>
-</tr>
-</table>
-
-With **30-D** latent variables **randomly** varied on two specific dimensions:
-
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-CIFAR10-400.png' height = '300px'>
 
 # Usage
 ## Prerequisites
