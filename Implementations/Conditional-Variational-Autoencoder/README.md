@@ -86,12 +86,13 @@ With **Bernoulli decoder** and **2-D** latent variable:
 </tr>
 </table>
 
-By 'mean reconstruction' I mean that the images were created by directly interpreting the output Bernoulli distribution parameter $$ p $$ as the pixel intensity. I also sampled images from the multivariate Bernoulli distribution, but the results weren't that pretty. Check them out at the ```/results``` folder.
+By 'mean reconstruction' I mean that the images were created by directly interpreting the output Bernoulli distribution parameter ```p``` as the pixel intensity. I also sampled images from the multivariate Bernoulli distribution, but the results weren't that pretty. Check them out at the ```/results``` folder.
 
 ## MNIST Generation
 
 With **2-D uniformly sampled** latent variables:
 
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-0.png' height = '450px'>
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-1.png' height = '450px'>
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-2.png' height = '450px'>
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-3.png' height = '450px'>
@@ -101,7 +102,6 @@ With **2-D uniformly sampled** latent variables:
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-7.png' height = '450px'>
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-8.png' height = '450px'>
 <img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-9.png' height = '450px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-10.png' height = '450px'>
 
 With **2-D randomly sampled** latent variables:
 
