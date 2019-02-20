@@ -92,16 +92,28 @@ By 'mean reconstruction' I mean that the images were created by directly interpr
 
 With **2-D uniformly sampled** latent variables:
 
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-0.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-1.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-2.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-3.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-4.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-5.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-6.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-7.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-8.png' height = '350px'>
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-9.png' height = '350px'>
+<table align='center'>
+<tr align='center'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-0.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-1.png' height = '350px'></td>
+</tr>
+<tr align='center'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-2.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-3.png' height = '350px'></td>
+</tr>
+<tr align='center'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-4.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-5.png' height = '350px'></td>
+</tr>
+<tr align='center'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-7.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-6.png' height = '350px'></td>
+</tr>
+<tr align='center'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-8.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-9.png' height = '350px'></td>
+</tr>
+</table>
 
 With **2-D randomly sampled** latent variables:
 
