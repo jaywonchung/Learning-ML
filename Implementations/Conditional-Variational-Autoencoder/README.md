@@ -86,43 +86,22 @@ With **Bernoulli decoder** and **2-D** latent variable:
 </tr>
 </table>
 
-With **Bernoulli decoder** and **10-D** latent variable:
-
-<table align='center'>
-<tr align='center'>
-    <td> Input image </td>
-</tr>
-<tr align='center'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Binarized-truth-Bernoulli-z2.png' height = '200px'> </td>
-</tr>
-<tr align='center'>
-	<td> Epoch 1 </td>
-    <td> Epoch 10  </td>
-    <td> Epoch 20 </td>
-    <td> Epoch 30 </td>
-</tr>
-<tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
-</tr>
-<tr align='center'>
-	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
-</tr>
-</table>
-
-- Row 2 are images generated directly from model output ```p```, while row 3 are sampled pixel-by-pixel from a Bernoulli distribution parametrized by ```p```.   
-- You can see that the sampled images are not of high quality. This was even worse for CIFAR10, so I did not generate sampled images for the CIFAR10 dataset.
+By 'mean reconstruction' I mean that the images were created by directly interpreting the output Bernoulli distribution parameter $$ p $$ as the pixel intensity. I also sampled images from the multivariate Bernoulli distribution, but the results weren't that pretty. Check them out at the ```/results``` folder.
 
 ## MNIST Generation
 
 With **2-D uniformly sampled** latent variables:
 
-<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-1.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-2.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-3.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-4.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-5.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-6.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-7.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-8.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-9.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400-10.png' height = '450px'>
 
 With **2-D randomly sampled** latent variables:
 
