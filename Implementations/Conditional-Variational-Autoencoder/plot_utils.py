@@ -21,6 +21,8 @@ def display_and_save_latent(batch, label, data, save=True, display=True):
 
     plt.title('Latent variables')
     plt.scatter(z[:,0], z[:,1], c=l, cmap=matplotlib.colors.ListedColormap(colors))
+    plt.xlim(-3, 3, )
+    plt.ylim(-3, 3)
     if save:
         plt.savefig('results/latent-variable' + data + '.png', transparent=True, bbox_inches='tight')
     if display:
