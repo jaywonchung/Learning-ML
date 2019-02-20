@@ -100,7 +100,7 @@ def main(**kwargs):
     first_test_batch, first_test_batch_label = first_test_batch.to(device), first_test_batch_label.to(device)
 
     # Display latent variable distribution before any training
-    if latent_dim == 2:
+    if latent_dim == 2 and resume_epoch == 0:
         autoencoder(first_test_batch, first_test_batch_label)
         display_and_save_latent(autoencoder.z, first_test_batch_label, f'-{decoder_type}-z{latent_dim}-e000')
 
