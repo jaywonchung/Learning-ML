@@ -102,7 +102,7 @@ def main(**kwargs):
     # Display latent variable distribution before any training
     if latent_dim == 2:
         autoencoder(first_test_batch, first_test_batch_label)
-        display_and_save_latent(autoencoder.z, first_test_batch_label, f'-{decoder_type}-z{latent_dim}-000')
+        display_and_save_latent(autoencoder.z, first_test_batch_label, f'-{decoder_type}-z{latent_dim}-e000')
 
     # Train
     autoencoder.train()
