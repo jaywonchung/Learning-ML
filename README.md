@@ -14,5 +14,6 @@ Here I list my progress in studying machine learning.
 
 
 3. Implementations: Concepts and specific papers  
-   - [Autoencoder, Denoising Autoencoder](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Denoising-Autoencoder)
-   - [Variational Autoencoder](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Variational-Autoencoder)
+   - [Autoencoder (AE), Denoising Autoencoder (DAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Denoising-Autoencoder)
+   - [Variational Autoencoder (VAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Variational-Autoencoder)
+   - [Conditional Variational Autoencoder (CVAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Conditional-Variational-Autoencoder)
