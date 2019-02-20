@@ -41,11 +41,13 @@ which was introduced in [Leaning Structured Output Representation Using Deep Con
 
 Refer to [```model.py```](/Implementations/Conditional-Variational-Autoencoder/model.py). At ```__init__```, I annotated the shape change of the input every layer.
 
+MNIST and CIFAR10 both have 10 classes. The labels are first transformed into onehot vectors each of size 10 and concatenated to the input of both the encoder and the decoder.
+
 # Results
 ## MNIST Reconstruction
 
 Training specs:
-- Initial learning rate ```3e-4``` with ```torch.optim.Adam``` optimizer
+- Initial learning rate ```1e-4``` with ```torch.optim.Adam``` optimizer
 - Learning rate scheduled with ```torch.optim.lr_scheduler.ReduceLROnPlateau``` by mean training loss
 - Batch size ```64```
 
@@ -56,25 +58,43 @@ With **Bernoulli decoder** and **2-D** latent variable:
     <td> Input image </td>
 </tr>
 <tr align='center'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Binarized-truth-Bernoulli-z10.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Binarized-truth.png' height = '200px'> </td>
 </tr>
 <tr align='center'>
 	<td> Epoch 1 </td>
-    <td> Epoch 10  </td>
-    <td> Epoch 30 </td>
+    <td> Epoch 2  </td>
+    <td> Epoch 5 </td>
+    <td> Epoch 10 </td>
+</tr>
+<tr align='center'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e001.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e002.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e005.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
+</tr>
+<tr align='center'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e001.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e002.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e005.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
+</tr>
+<tr align='center'>
+	<td> Epoch 20 </td>
+    <td> Epoch 30  </td>
+    <td> Epoch 40 </td>
     <td> Epoch 50 </td>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e020.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e040.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e020.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e030.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e040.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z2-e050.png' height = '200px'>
 </tr>
 </table>
 
@@ -85,7 +105,7 @@ With **Bernoulli decoder** and **10-D** latent variable:
     <td> Input image </td>
 </tr>
 <tr align='center'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Binarized-truth-Bernoulli-z2.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Binarized-truth-Bernoulli-z2.png' height = '200px'> </td>
 </tr>
 <tr align='center'>
 	<td> Epoch 1 </td>
@@ -94,16 +114,16 @@ With **Bernoulli decoder** and **10-D** latent variable:
     <td> Epoch 30 </td>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e001.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e010.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e020.png' height = '200px'>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Sampled-reconstruction-Bernoulli-z10-e030.png' height = '200px'>
 </tr>
 </table>
 
@@ -114,11 +134,11 @@ With **Bernoulli decoder** and **10-D** latent variable:
 
 With **2-D uniformly sampled** latent variables:
 
-<img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-MNIST-400.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-MNIST-400.png' height = '450px'>
 
 With **2-D randomly sampled** latent variables:
 
-<img src = '/Implementations/Variational-Autoencoder/results/random-generation-MNIST-400.png' height = '450px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400.png' height = '450px'>
 
 ## CIFAR10 Reconstruction
 
@@ -132,10 +152,10 @@ With **Gaussian decoder** and **30-D** latent variable:
     <td> Epoch 50 </td>
 </tr>
 <tr align='center'>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Truth-Gaussian-z30.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e001.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e010.png' height = '200px'> </td>
-    <td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e050.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Truth-Gaussian-z30.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e001.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e010.png' height = '200px'> </td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e050.png' height = '200px'> </td>
 </tr>
 <tr align='center'>
 	<td> Epoch 100 </td>
@@ -144,10 +164,10 @@ With **Gaussian decoder** and **30-D** latent variable:
     <td> Epoch 1000 </td>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e100.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e300.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e600.png' height = '200px'> </td>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e1000.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e100.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e300.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e600.png' height = '200px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/Mean-reconstruction-Gaussian-z30-e1000.png' height = '200px'> </td>
 </tr>
 </table>
 
@@ -157,15 +177,15 @@ With **30-D** latent variables **uniformly** varied on two specific dimensions:
 
 <table align='center'>
 <tr align='center'>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-1.png' height = '300px'> </td>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-2.png' height = '300px'> </td>
-	<td><img src = '/Implementations/Variational-Autoencoder/results/uniform-generation-CIFAR10-400-3.png' height = '300px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-1.png' height = '300px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-2.png' height = '300px'> </td>
+	<td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/uniform-generation-CIFAR10-400-3.png' height = '300px'> </td>
 </tr>
 </table>
 
 With **30-D** latent variables **randomly** varied on two specific dimensions:
 
-<img src = '/Implementations/Variational-Autoencoder/results/random-generation-CIFAR10-400.png' height = '300px'>
+<img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-CIFAR10-400.png' height = '300px'>
 
 # Usage
 ## Prerequisites
