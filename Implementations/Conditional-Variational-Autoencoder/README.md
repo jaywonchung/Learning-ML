@@ -131,8 +131,8 @@ With **2-D randomly sampled** latent variables:
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400-5.png' height = '350px'></td>
 </tr>
 <tr align='center'>
-    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400-7.png' height = '350px'></td>
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400-6.png' height = '350px'></td>
+    <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400-7.png' height = '350px'></td>
 </tr>
 <tr align='center'>
     <td><img src = '/Implementations/Conditional-Variational-Autoencoder/results/random-generation-MNIST-400-8.png' height = '350px'></td>
