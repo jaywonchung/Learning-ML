@@ -76,7 +76,7 @@ def main(**kwargs):
             # Calculate discriminator fake_loss and loss
             disc_fake_loss = criterion(disc_output, label)
             disc_loss = disc_real_loss + disc_fake_loss
-            D_loss.append(disc_loss)
+            D_loss.append(disc_loss.item())
 
             # Backward propagate fake_loss
             disc_fake_loss.backward()
@@ -92,7 +92,7 @@ def main(**kwargs):
 
             # Calculate generator loss
             gen_loss = criterion(disc_output, label)
-            G_loss.append(gen_loss)
+            G_loss.append(gen_loss.item())
 
             # Backward propagate generator
             generator.zero_grad()
