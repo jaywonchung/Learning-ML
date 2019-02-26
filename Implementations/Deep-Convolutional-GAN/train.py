@@ -103,7 +103,7 @@ def main(**kwargs):
 
             # Print training status
             if i % PRINT_EVERY == 0:
-                message = f'Epochs: {epoch+1:02d}/{EPOCHS:02d}\tBatch: {i+1:03d}/{len(dataloader):03d}\tdisc_loss: {disc_loss.item():.4f}\tgen_loss: {gen_loss.item():.4f}'
+                message = f'Epochs: {epoch+1:02d}/{EPOCHS:02d}\tBatch: {i+1:04d}/{len(dataloader):04d}\tdisc_loss: {disc_loss.item():.4f}\tgen_loss: {gen_loss.item():.4f}'
                 print(message, end='\r')
                 sys.stdout.flush()
         
