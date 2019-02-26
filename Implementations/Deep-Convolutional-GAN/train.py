@@ -109,8 +109,8 @@ def main(**kwargs):
         img_list.append(utils.make_grid(fake_image, padding=2, normalize=True))
 
         # Create checkpoints
-        torch.save(discriminator, f'saved_model/discriminator_e{epoch:02d}')
-        torch.save(generator, f'saved_model/generator_e{epoch:02d}')
+        torch.save(discriminator, f'saved_model/discriminator_e{epoch+1:02d}')
+        torch.save(generator, f'saved_model/generator_e{epoch+1:02d}')
 
 
 if __name__ == "__main__":
