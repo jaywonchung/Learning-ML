@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 from constants import *
 from model import *
 from dataset import create_dataloader
-from plot_utils import display_batch
+from plot_utils import *
 
 device = torch.device('cuda:0' if torch.cuda.is_available() and NGPU > 0 else 'cpu')
 
@@ -41,6 +41,8 @@ def main(**kwargs):
 
     # Training status tracker
     img_list = []
+    D_loss = []
+    G_loss = []
 
     # Announce training
     print("Begin training DCGAN")
@@ -74,6 +76,7 @@ def main(**kwargs):
             # Calculate discriminator fake_loss and loss
             disc_fake_loss = criterion(disc_output, label)
             disc_loss = disc_real_loss + disc_fake_loss
+            D_loss.append(disc_loss)
 
             # Backward propagate fake_loss
             disc_fake_loss.backward()
@@ -89,6 +92,7 @@ def main(**kwargs):
 
             # Calculate generator loss
             gen_loss = criterion(disc_output, label)
+            G_loss.append(gen_loss)
 
             # Backward propagate generator
             generator.zero_grad()
@@ -111,6 +115,8 @@ def main(**kwargs):
         # Create checkpoints
         torch.save(discriminator, f'saved_model/discriminator_e{epoch+1:02d}')
         torch.save(generator, f'saved_model/generator_e{epoch+1:02d}')
+    
+    display_loss(D_loss, G_loss)
 
 
 if __name__ == "__main__":
