@@ -105,7 +105,7 @@ def main(**kwargs):
         
         # Evaluate training status by generating images on a fixed noise
         with torch.no_grad():
-            fake_image = generator(fixed_noise).dtach().cpu()
+            fake_image = generator(fixed_noise).detach().cpu()
         img_list.append(utils.make_grid(fake_image, padding=2, normalize=True))
 
         # Create checkpoints
