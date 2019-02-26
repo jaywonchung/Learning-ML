@@ -54,7 +54,7 @@ def main(**kwargs):
             label = torch.full((BATCH_SIZE,), REAL_LABEL, device=device)
             
             # Fowrard pass discriminator
-            disc_output = discriminator(real_data).view(-1)
+            disc_output = discriminator(real_data).squeeze()
 
             # Calculate discriminator real_loss
             disc_real_loss = criterion(disc_output, label)
@@ -69,20 +69,20 @@ def main(**kwargs):
             label.fill_(FAKE_LABEL)
 
             # Forward pass generator
-            disc_output = discriminator(fake_data.detach()).view(-1)
+            disc_output = discriminator(fake_data.detach()).squeeze()
 
             # Calculate discriminator fake_loss and loss
             disc_fake_loss = criterion(disc_output, label)
             disc_loss = disc_real_loss + disc_fake_loss
 
-            # Backward propagate discriminator loss
+            # Backward propagate fake_loss
             disc_fake_loss.backward()
 
             # Update discriminator parameters
             optim_discriminator.step()
 
             # Forward pass fake_data to updated discriminator
-            disc_output = discriminator(fake_data).view(-1)
+            disc_output = discriminator(fake_data).squeeze()
 
             # Fill label in the generator's perspective
             label.fill_(REAL_LABEL)
