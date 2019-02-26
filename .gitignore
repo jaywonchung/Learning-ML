@@ -1,6 +1,6 @@
 Lectures/Coursera/Machine Learning (Andrew Ng)/Lecture Notes/
 Lectures/Coursera/Machine Learning (Andrew Ng)/Summary/
-Implementations/Data/
+Implementations/Dataset/*
 Implementations/*/MNIST/
 Implementations/*/CIFAR10/
 
@@ -38,5 +38,6 @@ Implementations/*/CIFAR10/
 ._*
 .Spotlight-V100
 .Trashes
+.icloud
 ehthumbs.db
 Thumbs.db
