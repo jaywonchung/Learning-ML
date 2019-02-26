@@ -45,7 +45,7 @@ def main(**kwargs):
     G_loss = []
 
     # Announce training
-    print("Begin training DCGAN")
+    print(f"Begin training DCGAN on {DATASET}")
 
     # Train
     for epoch in range(EPOCHS):
