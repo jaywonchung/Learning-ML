@@ -39,6 +39,12 @@ def create_dataloader(name='celeba'):
         dataset = torch.utils.data.ConcatDataset([train_dataset, test_dataset])
 
     # Instantiate DataLoader
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
+    dataloader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=BATCH_SIZE,
+        shuffle=True,
+        drop_last=True,
+        num_workers=2
+    )
 
     return dataloader
