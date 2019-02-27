@@ -8,9 +8,9 @@ import torchvision.utils as utils
 import torchvision.transforms as transforms
 
 from constants import *
-from model import *
+from model import Discriminator, Generator
 from dataset import create_dataloader
-from plot_utils import *
+from plot_utils import display_batch, display_loss
 
 device = torch.device('cuda:0' if torch.cuda.is_available() and NGPU > 0 else 'cpu')
 
