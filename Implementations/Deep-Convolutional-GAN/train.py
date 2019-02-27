@@ -110,7 +110,7 @@ def main():
         # Evaluate training status by generating images on a fixed noise
         with torch.no_grad():
             fake_image = generator(fixed_noise)
-        display_batch(fake_image[:64, :, :, :], f'fixed-noise-{DATASET}-z{LATENT_DIM}-e{epoch+1:02d}')
+        display_batch(fake_image, f'fixed-noise-{DATASET}-z{LATENT_DIM}-e{epoch+1:02d}')
 
         # Create checkpoints
         torch.save(discriminator, f'saved_model/discriminator-{DATASET}-z{LATENT_DIM}-e{epoch+1:02d}')
