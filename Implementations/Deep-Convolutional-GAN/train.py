@@ -15,10 +15,10 @@ from plot_utils import *
 device = torch.device('cuda:0' if torch.cuda.is_available() and NGPU > 0 else 'cpu')
 
 
-def main(**kwargs):
+def main():
 
     # Instantiate DataLoader
-    dataloader = create_dataloader(name='celeba')
+    dataloader = create_dataloader()
 
     # Instantiate Model
     generator = Generator().to(device)
@@ -113,8 +113,8 @@ def main(**kwargs):
         display_batch(fake_image[:64, :, :, :], f'fixed-noise-epoch{epoch+1:02d}')
 
         # Create checkpoints
-        torch.save(discriminator, f'saved_model/discriminator_e{epoch+1:02d}')
-        torch.save(generator, f'saved_model/generator_e{epoch+1:02d}')
+        torch.save(discriminator, f'saved_model/discriminator_{DATASET}_e{epoch+1:02d}')
+        torch.save(generator, f'saved_model/generator_{DATASET}_e{epoch+1:02d}')
     
     display_loss(D_loss, G_loss)
 

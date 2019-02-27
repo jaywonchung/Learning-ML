@@ -6,9 +6,9 @@ import torchvision.transforms as transforms
 from constants import *
 
 
-def create_dataloader(name='celeba'):
+def create_dataloader():
 
-    if name == 'celeba':
+    if DATASET == 'CelebA':
         # Define transform to apply to input images
         trsf = transforms.Compose([
             transforms.Resize(64),
@@ -20,22 +20,22 @@ def create_dataloader(name='celeba'):
         # Load dataset from folder
         dataset = datasets.ImageFolder(DATA_PATH, transform=trsf)
 
-    elif name == 'mnist':
+    elif DATASET == 'MNIST':
         # Define transform to apply to input images
         trsf = transforms.ToTensor()
 
         # Load dataset
-        train_dataset = datasets.MNIST(MNIST_PATH, train=True, transform=trsf)
-        test_dataset = datasets.MNIST(MNIST_PATH, train=False, transform=trsf)
+        train_dataset = datasets.MNIST(DATA_PATH, train=True, transform=trsf, download=True)
+        test_dataset = datasets.MNIST(DATA_PATH, train=False, transform=trsf, download=True)
         dataset = torch.utils.data.ConcatDataset([train_dataset, test_dataset])
 
-    elif name == 'cifar10':
+    elif DATASET == 'CIFAR10':
         # Define transform to apply to input images
         trsf = transforms.ToTensor()
 
         # Load dataset
-        train_dataset = datasets.CIFAR10(MNIST_PATH, train=True, transform=trsf)
-        test_dataset = datasets.CIFAR10(MNIST_PATH, train=False, transform=trsf)
+        train_dataset = datasets.CIFAR10(DATA_PATH, train=True, transform=trsf, download=True)
+        test_dataset = datasets.CIFAR10(DATA_PATH, train=False, transform=trsf, download=True)
         dataset = torch.utils.data.ConcatDataset([train_dataset, test_dataset])
 
     # Instantiate DataLoader
