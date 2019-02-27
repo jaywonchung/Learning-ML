@@ -2,7 +2,7 @@ _IMAGE_SIZES = {'CelebA': 64, 'CIFAR10': 32, 'MNIST': 28}
 _COLOR_CHANNELS = {'CelebA': 3, 'CIFAR10': 3, 'MNIST': 1}
 
 # Dataset
-DATASET = 'MNIST'
+DATASET = 'CIFAR10'
 DATA_PATH = '../Dataset/' + DATASET
 
 # Image
