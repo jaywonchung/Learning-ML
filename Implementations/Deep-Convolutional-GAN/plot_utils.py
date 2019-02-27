@@ -2,10 +2,12 @@ import torchvision
 import numpy as np
 import matplotlib.pyplot as plt
 
+from constants import *
+
 
 def display_batch(batch, title, save=True):
     """Display batch of image using plt"""
-    im = torchvision.utils.make_grid(batch, nrow=int(batch.shape[0]**0.5), padding=2, normalize=True)
+    im = torchvision.utils.make_grid(batch, nrow=int(batch.shape[0]**0.5), padding=2, normalize=(DATASET=='CelebA'))
     plt.title(title)
     plt.imshow(np.transpose(im.cpu().detach().numpy(), (1, 2, 0)))
     if save:
@@ -22,5 +24,5 @@ def display_loss(D_loss, G_loss, save=True):
     plt.ylabel("loss")
     plt.legend()
     if save:
-        plt.savefig('results/loss.png')
+        plt.savefig(f'results/loss_{DATASET}.png')
     plt.show()
