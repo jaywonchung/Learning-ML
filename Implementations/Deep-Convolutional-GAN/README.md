@@ -132,7 +132,7 @@ Generated with **100-D** fixed noise every epoch:
 
 ## Configuration
 
-You can configure the dataset, training specs, the latent variable dimension, and more in [```constants.py```](/Implementations/Deep-Convolutional-GAN/constants.py).
+You can configure the dataset, training specs, the latent variable dimension, and more in [```constants.py```](/Implementations/Deep-Convolutional-GAN/constants.py). 
 
 ## Execution
 
