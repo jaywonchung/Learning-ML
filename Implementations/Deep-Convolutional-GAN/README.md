@@ -130,11 +130,15 @@ Generated with **100-D** fixed noise every epoch:
 1. Pytorch and torchvision
 2. Packages: numpy, matplotlib
 
+## Configuration
+
+You can configure the dataset, training specs, the latent variable dimension, and more in [```constants.py```](/Implementations/Deep-Convolutional-GAN/constants.py).
+
 ## Execution
 
 Command line:
 ```bash
-python train.py -d 'MNIST' -t 'Bernoulli' -s False -e 10 -b 64 -lr 3e-4 -z 10 -p 1 -rp 'saved_model/path' -re 20
+python train.py
 ```
 
 Jupyter notebook:
@@ -142,20 +146,7 @@ Jupyter notebook:
 from train import main
 %matplotlib inline
 
-main(dataset='MNIST', decoder_type='Bernoulli', model_sigma=False, epochs=10, batch_size=64, learning_rate=3e-4, latent_dim=10, print_every=1, resume_path='saved_model/path', resume_epoch=20)
+main()
 ```
 
-## Arguments
-Every argument is optional, and has a default value defined at ```arguments.py```.
-
-- ```--dataset, -d```: 'MNIST' or 'CIFAR10'. *Default*: - ```'MNIST'```  
-- ```--decoder_type, -t```: 'Bernoulli' or 'Gaussian'. *Default*: ```'Bernoulli'```
-- ```--model_sigma, -s```: In case of Gaussian decoder, whether to model the standard deviation. *Default*: ```False```
-- ```--epochs, -e```: Number of epochs to train. *Default*: ```10```
-- ```--batch_size, -b```: Size of batch size at training/testing. *Default*: ```64```
-- ```--learning_rate, -lr```: Learning rate. *Default*: ```3e-4```
-- ```--latent_dim, -z```: Dimension of the latent variable. *Default*: ```10```
-- ```--print_every, -p```: How often to print training progress. *Default*: ```1```
-- ```--resume_path, -rp```: In case you want to resume training from a saved model, provide its path here.
-- ```--resume_epoch, -re```: Number of epochs already trained for the saved model. *Default*: ```0```
 
