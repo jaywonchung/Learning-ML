@@ -2,7 +2,7 @@ _IMAGE_SIZES = {'CelebA': 64, 'CIFAR10': 32, 'MNIST': 28}
 _COLOR_CHANNELS = {'CelebA': 3, 'CIFAR10': 3, 'MNIST': 1}
 
 # Dataset
-DATASET = 'CIFAR10'
+DATASET = 'MNIST'
 DATA_PATH = '../Dataset/' + DATASET
 
 # Image
@@ -11,14 +11,14 @@ NUM_CHANNELS = _COLOR_CHANNELS[DATASET]
 
 # Model
 NUM_FILTERS = 128 if DATASET == 'CelebA' else 64
-LATENT_DIM = 100
+LATENT_DIM = 2
 
 # Resource
 NGPU = 4
 
 # Training
 BATCH_SIZE = 128
-EPOCHS = 50
+EPOCHS = 20
 LR = 2e-4
 BETA1 = 0.5
 REAL_LABEL = 1
