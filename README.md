@@ -17,3 +17,4 @@ Here I list my progress in studying machine learning.
    - [Autoencoder (AE), Denoising Autoencoder (DAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Denoising-Autoencoder)
    - [Variational Autoencoder (VAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Variational-Autoencoder)
    - [Conditional Variational Autoencoder (CVAE)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Conditional-Variational-Autoencoder)
+   - [Deep Convolutional GAN (DCGAN)](https://github.com/jaywonchung/Learning-ML/tree/master/Implementations/Deep-Convolutional-GAN)
