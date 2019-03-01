@@ -54,9 +54,9 @@ Generated with **100-D** fixed noise every epoch:
     <td> Epoch 5 </td>
 </tr>
 <tr align='center'>
-	<td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e01.png' height = '200px'>
-    <td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e02.png' height = '200px'>
-    <td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e05.png' height = '200px'>
+	<td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e01.png' height = '300px'>
+    <td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e02.png' height = '300px'>
+    <td><img src = '/Implementations/Deep-Convolutional-GAN/results/fixed-noise-MNIST-z100-e05.png' height = '300px'>
 </tr>
 <tr align='center'>
 	<td> Epoch 10 </td>
