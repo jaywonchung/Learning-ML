@@ -6,38 +6,7 @@ This is the pytorch implementation of:
 
 which was introduced in [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](https://arxiv.org/abs/1511.06434) by Radford et al.
 
-# Structure
-## Model types
-
-<table align='center'>
-<tr align='center'>
-	<td> <strong>Encoder</strong> </td>
-	<td colspan=3>  Gaussian </td>
-</tr>
-<tr align='center'>
-	<td> <strong>Decoder</strong> </td>
-	<td colspan=2> Gaussian </td>
-	<td> Bernoulli </td>
-</tr>
-<tr align='center'>
-	<td> <strong>Model output</strong> </td>
-	<td> Mean, Std</td>
-	<td> Mean</td>
-	<td> Probability </td>
-</tr>
-<tr align='center'>
-	<td> <strong>Supported dataset</strong> </td>
-	<td colspan=2> MNIST, CIFAR10</td>
-	<td> MNIST</td>
-</tr>
-<tr align='center'>
-	<td> <strong>Input image</strong> </td>
-	<td colspan=2> As is </td>
-	<td>  Binarized</td>
-</tr>
-</table>
-
-## Network Structure
+# Network Structure
 
 Refer to [```model.py```](/Implementations/Conditional-Variational-Autoencoder/model.py). At ```__init__```, I annotated the shape change of the input every layer.
 
