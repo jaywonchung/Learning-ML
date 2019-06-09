@@ -11,6 +11,7 @@ Here I list my progress in studying machine learning.
 
 2. Papers: Reviews and tutorials  
    - [XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks](https://github.com/jaywonchung/Learning-ML/tree/master/Papers/XNOR-Net)
+   - [Pytorch Beginner's Tutorial in Jupyter notebook](https://github.com/jaywonchung/Pytorch-Tutorial)
 
 
 3. Implementations: Concepts and specific papers  
